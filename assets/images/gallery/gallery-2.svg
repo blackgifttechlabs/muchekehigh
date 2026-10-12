@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 900" preserveAspectRatio="xMidYMid slice">
+<defs><linearGradient id="sk" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6FA3B3"/><stop offset="1" stop-color="#CFE3E6"/></linearGradient></defs>
+<rect width="900" height="900" fill="url(#sk)"/>
+<ellipse cx="654" cy="558.0" rx="228" ry="93" fill="#7A7064" opacity="0.35"/>
+<ellipse cx="759" cy="558.0" rx="270" ry="121" fill="#7A7064" opacity="0.5"/>
+<ellipse cx="228" cy="558.0" rx="235" ry="184" fill="#7A7064" opacity="0.6499999999999999"/>
+<ellipse cx="104" cy="558.0" rx="373" ry="184" fill="#7A7064" opacity="0.7999999999999999"/>
+<rect y="558.0" width="900" height="342.0" fill="#5E7F3A"/>
+<rect x="90.0" y="630.0" width="720.0" height="198.0" fill="none" stroke="#fff" stroke-width="6"/>
+<circle cx="450.0" cy="729.0" r="70" fill="none" stroke="#fff" stroke-width="6"/>
+<circle cx="693" cy="556" r="18" fill="#4A3426"/><rect x="673" y="574" width="40" height="60" rx="10" fill="#D9A21B"/>
+<circle cx="739" cy="642" r="18" fill="#4A3426"/><rect x="719" y="660" width="40" height="60" rx="10" fill="#1F4E5F"/>
+<circle cx="167" cy="541" r="18" fill="#4A3426"/><rect x="147" y="559" width="40" height="60" rx="10" fill="#D9A21B"/>
+<circle cx="230" cy="589" r="18" fill="#4A3426"/><rect x="210" y="607" width="40" height="60" rx="10" fill="#1F4E5F"/>
+<circle cx="373" cy="663" r="18" fill="#4A3426"/><rect x="353" y="681" width="40" height="60" rx="10" fill="#D9A21B"/>
+<circle cx="751" cy="540" r="18" fill="#4A3426"/><rect x="731" y="558" width="40" height="60" rx="10" fill="#1F4E5F"/>
+<circle cx="709" cy="584" r="18" fill="#4A3426"/><rect x="689" y="602" width="40" height="60" rx="10" fill="#D9A21B"/>
+<rect y="840" width="900" height="60" fill="#163842"/>
+<polyline points="0,885 20,855 40,885 60,855 80,885 100,855 120,885 140,855 160,885 180,855 200,885 220,855 240,885 260,855 280,885 300,855 320,885 340,855 360,885 380,855 400,885 420,855 440,885 460,855 480,885 500,855 520,885 540,855 560,885 580,855 600,885 620,855 640,885 660,855 680,885 700,855 720,885 740,855 760,885 780,855 800,885 820,855 840,885 860,855 880,885 900,855 920,885 940,855" fill="none" stroke="#D9A21B" stroke-width="6"/>
+<rect x="24" y="24" rx="8" width="285" height="52" fill="rgba(0,0,0,.45)"/>
+<text x="44" y="58" font-family="Arial,sans-serif" font-size="24" fill="#fff">Replace with photo: athletics</text>
+</svg>

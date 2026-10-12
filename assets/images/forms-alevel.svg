@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice">
+<defs><linearGradient id="sk" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6FA3B3"/><stop offset="1" stop-color="#CFE3E6"/></linearGradient></defs>
+<rect width="1200" height="800" fill="url(#sk)"/>
+<ellipse cx="88" cy="496.0" rx="400" ry="156" fill="#7A7064" opacity="0.35"/>
+<ellipse cx="247" cy="496.0" rx="330" ry="115" fill="#7A7064" opacity="0.5"/>
+<ellipse cx="805" cy="496.0" rx="288" ry="157" fill="#7A7064" opacity="0.6499999999999999"/>
+<ellipse cx="592" cy="496.0" rx="349" ry="108" fill="#7A7064" opacity="0.7999999999999999"/>
+<rect y="496.0" width="1200" height="304.0" fill="#D8C9A8"/>
+<circle cx="138.0" cy="452.0" r="34" fill="#4A3426"/><rect x="90.0" y="490.0" width="96" height="150" rx="24" fill="#1F4E5F"/>
+<circle cx="226.0" cy="452.0" r="34" fill="#4A3426"/><rect x="178.0" y="490.0" width="96" height="150" rx="24" fill="#D9A21B"/>
+<circle cx="366.0" cy="456.0" r="34" fill="#4A3426"/><rect x="318.0" y="494.0" width="96" height="150" rx="24" fill="#F3F1EC"/>
+<circle cx="477.0" cy="489.0" r="34" fill="#4A3426"/><rect x="429.0" y="527.0" width="96" height="150" rx="24" fill="#1F4E5F"/>
+<circle cx="586.0" cy="485.0" r="34" fill="#4A3426"/><rect x="538.0" y="523.0" width="96" height="150" rx="24" fill="#D9A21B"/>
+<circle cx="720.0" cy="493.0" r="34" fill="#4A3426"/><rect x="672.0" y="531.0" width="96" height="150" rx="24" fill="#F3F1EC"/>
+<circle cx="839.0" cy="437.0" r="34" fill="#4A3426"/><rect x="791.0" y="475.0" width="96" height="150" rx="24" fill="#1F4E5F"/>
+<circle cx="976.0" cy="475.0" r="34" fill="#4A3426"/><rect x="928.0" y="513.0" width="96" height="150" rx="24" fill="#D9A21B"/>
+<circle cx="1072.0" cy="492.0" r="34" fill="#4A3426"/><rect x="1024.0" y="530.0" width="96" height="150" rx="24" fill="#F3F1EC"/>
+<rect y="740" width="1200" height="60" fill="#163842"/>
+<polyline points="0,785 20,755 40,785 60,755 80,785 100,755 120,785 140,755 160,785 180,755 200,785 220,755 240,785 260,755 280,785 300,755 320,785 340,755 360,785 380,755 400,785 420,755 440,785 460,755 480,785 500,755 520,785 540,755 560,785 580,755 600,785 620,755 640,785 660,755 680,785 700,755 720,785 740,755 760,785 780,755 800,785 820,755 840,785 860,755 880,785 900,755 920,785 940,755 960,785 980,755 1000,785 1020,755 1040,785 1060,755 1080,785 1100,755 1120,785 1140,755 1160,785 1180,755 1200,785 1220,755" fill="none" stroke="#D9A21B" stroke-width="6"/>
+<rect x="24" y="24" rx="8" width="435" height="52" fill="rgba(0,0,0,.45)"/>
+<text x="44" y="58" font-family="Arial,sans-serif" font-size="24" fill="#fff">Replace with photo: sixth form students</text>
+</svg>

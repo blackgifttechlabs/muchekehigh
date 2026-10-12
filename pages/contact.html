@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Contact | Mucheke High School</title>
+  <meta name="description" content="Contact Mucheke High School in Masvingo, Zimbabwe.">
+  <link rel="icon" href="../assets/images/mucheke-crest-navy-icon.png" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&family=Zilla+Slab:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/layout.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+</head>
+<body data-root="../" data-page="contact">
+  <div id="header-slot"></div>
+
+  <main id="main">
+    <section class="page-hero">
+      <img src="../assets/images/generated/friends-on-bench-landscape.webp" alt="Friends chatting in the school courtyard">
+      <div class="container">
+        <p class="breadcrumb"><a href="../index.html">Home</a> / Contact</p>
+        <h1>Contact us</h1>
+        <p>We are happy to answer your questions.</p>
+      </div>
+    </section>
+    <div class="wall-band" aria-hidden="true"></div>
+
+    <section class="section">
+      <div class="container split" style="align-items:start">
+        <div>
+          <h2>Get in touch</h2>
+          <p><strong>Phone</strong><br><a href="tel:+26339265533">+263 39 265533</a></p>
+          <p><strong>Email</strong><br><a href="mailto:info@muchekehigh.ac.zw">info@muchekehigh.ac.zw</a></p>
+          <p><strong>Address</strong><br>Mucheke High School<br>Mucheke, Masvingo<br>Zimbabwe</p>
+          <p><strong>Office hours</strong><br>07:30 – 16:00, Monday to Friday</p>
+          <p><strong>Facebook</strong><br><a href="https://www.facebook.com/muchekehighschool/" target="_blank" rel="noopener">facebook.com/muchekehighschool</a></p>
+        </div>
+        <div>
+          <h2>Send a message</h2>
+          <form class="form" data-check data-subject="Website message" novalidate>
+            <div class="form__row">
+              <div><label for="c-name">Your name</label><input id="c-name" name="Name" required><p class="error">Please enter your name.</p></div>
+              <div><label for="c-email">Email</label><input id="c-email" name="Email" type="email" required><p class="error">Please enter a valid email.</p></div>
+            </div>
+            <div><label for="c-topic">Topic</label>
+              <select id="c-topic" name="Topic"><option>General question</option><option>Admissions</option><option>Fees</option><option>Former students</option></select></div>
+            <div><label for="c-msg">Message</label><textarea id="c-msg" name="Message" rows="6" required></textarea><p class="error">Please write a message.</p></div>
+            <button class="btn btn--river" type="submit">Send message</button>
+            <p class="form-status" role="status"></p>
+          </form>
+        </div>
+      </div>
+    </section>
+    <section aria-label="Map">
+      <!-- TODO: replace with the exact school location from Google Maps (Share > Embed a map) -->
+      <iframe class="map-frame" title="Map of Mucheke, Masvingo" loading="lazy"
+        src="https://www.google.com/maps?q=Mucheke+High+School,+Masvingo,+Zimbabwe&output=embed"></iframe>
+    </section>
+
+  </main>
+
+  <div id="footer-slot"></div>
+
+  <script src="../assets/js/data/site.js"></script>
+  <script src="../assets/js/data/news.js"></script>
+  <script src="../assets/js/components.js"></script>
+  <script src="../assets/js/main.js"></script>
+</body>
+</html>

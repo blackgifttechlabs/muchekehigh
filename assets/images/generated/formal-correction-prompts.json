@@ -1,0 +1,13 @@
+{
+  "tool": "built-in image_gen",
+  "prompts": [
+    {
+      "name": "group-study-formal-square.png",
+      "prompt": "Edit the supplied group-study square image. Correct ONLY clothing so all three students wear formal school uniform, with NO sportswear. Keep faces, people, classroom, desk, books, composition, lighting and realistic textures unchanged. Boy retains his white short-sleeved collared shirt and diagonal purple/light cyan/magenta striped tie with purple trousers. Both girls wear white short-sleeved collared school blouses, matching diagonal purple/light cyan/magenta striped ties, and solid purple sleeveless school pinafore dresses, as in the user's Downloads formal-uniform reference. Remove every tracksuit jacket, zip, athletic white shoulder panel, plain T-shirt neckline, and athletic trouser stripe from the study scene, including background students. Background students must also wear formal white collared shirts with purple formal garments. Small approximate crest only. Preserve natural skin pores, woven cloth texture and documentary realism. Output square single photograph."
+    },
+    {
+      "name": "school-bus-formal-portrait.png",
+      "prompt": "Edit this portrait school bus photograph, changing ONLY all pupils' clothing to consistently formal Mucheke school uniform. NO sportswear anywhere. All girls including the girl climbing aboard wear solid purple sleeveless knee-length school pinafore dresses over white short sleeve collared blouses, diagonal purple/cyan/magenta striped ties, white ankle socks and black school shoes. Boys wear white collared short sleeve shirts, same ties, plain purple tailored trousers without any sports stripes, black shoes. Background pupils also formal. Remove tracksuit jackets, zippers, white athletic panels, sneakers and athletic trouser stripes. Keep identities, faces, poses, backpacks, adult staff, bus and livery, ground, framing and lighting unchanged. Maintain realistic fabric weave, natural skin detail and photographic texture. Single portrait photo."
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 900" preserveAspectRatio="xMidYMid slice">
+<defs><linearGradient id="sk" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6FA3B3"/><stop offset="1" stop-color="#CFE3E6"/></linearGradient></defs>
+<rect width="900" height="900" fill="url(#sk)"/>
+<ellipse cx="78" cy="558.0" rx="302" ry="95" fill="#7A7064" opacity="0.35"/>
+<ellipse cx="602" cy="558.0" rx="350" ry="200" fill="#7A7064" opacity="0.5"/>
+<ellipse cx="234" cy="558.0" rx="362" ry="156" fill="#7A7064" opacity="0.6499999999999999"/>
+<ellipse cx="155" cy="558.0" rx="349" ry="158" fill="#7A7064" opacity="0.7999999999999999"/>
+<rect y="558.0" width="900" height="342.0" fill="#D8C9A8"/>
+<circle cx="102.0" cy="509.0" r="34" fill="#4A3426"/><rect x="54.0" y="547.0" width="96" height="150" rx="24" fill="#1F4E5F"/>
+<circle cx="186.5" cy="558.0" r="34" fill="#4A3426"/><rect x="138.5" y="596.0" width="96" height="150" rx="24" fill="#D9A21B"/>
+<circle cx="285.0" cy="548.0" r="34" fill="#4A3426"/><rect x="237.0" y="586.0" width="96" height="150" rx="24" fill="#F3F1EC"/>
+<circle cx="350.5" cy="561.0" r="34" fill="#4A3426"/><rect x="302.5" y="599.0" width="96" height="150" rx="24" fill="#1F4E5F"/>
+<circle cx="431.0" cy="516.0" r="34" fill="#4A3426"/><rect x="383.0" y="554.0" width="96" height="150" rx="24" fill="#D9A21B"/>
+<circle cx="547.5" cy="566.0" r="34" fill="#4A3426"/><rect x="499.5" y="604.0" width="96" height="150" rx="24" fill="#F3F1EC"/>
+<circle cx="613.0" cy="541.0" r="34" fill="#4A3426"/><rect x="565.0" y="579.0" width="96" height="150" rx="24" fill="#1F4E5F"/>
+<circle cx="698.5" cy="553.0" r="34" fill="#4A3426"/><rect x="650.5" y="591.0" width="96" height="150" rx="24" fill="#D9A21B"/>
+<circle cx="765.0" cy="533.0" r="34" fill="#4A3426"/><rect x="717.0" y="571.0" width="96" height="150" rx="24" fill="#F3F1EC"/>
+<rect y="840" width="900" height="60" fill="#163842"/>
+<polyline points="0,885 20,855 40,885 60,855 80,885 100,855 120,885 140,855 160,885 180,855 200,885 220,855 240,885 260,855 280,885 300,855 320,885 340,855 360,885 380,855 400,885 420,855 440,885 460,855 480,885 500,855 520,885 540,855 560,885 580,855 600,885 620,855 640,885 660,855 680,885 700,855 720,885 740,855 760,885 780,855 800,885 820,855 840,885 860,855 880,885 900,855 920,885 940,855" fill="none" stroke="#D9A21B" stroke-width="6"/>
+<rect x="24" y="24" rx="8" width="315" height="52" fill="rgba(0,0,0,.45)"/>
+<text x="44" y="58" font-family="Arial,sans-serif" font-size="24" fill="#fff">Replace with photo: debate club</text>
+</svg>

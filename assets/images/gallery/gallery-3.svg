@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 900" preserveAspectRatio="xMidYMid slice">
+<defs><linearGradient id="sk" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6FA3B3"/><stop offset="1" stop-color="#CFE3E6"/></linearGradient></defs>
+<rect width="900" height="900" fill="url(#sk)"/>
+<ellipse cx="39" cy="558.0" rx="273" ry="179" fill="#7A7064" opacity="0.35"/>
+<ellipse cx="780" cy="558.0" rx="236" ry="149" fill="#7A7064" opacity="0.5"/>
+<ellipse cx="378" cy="558.0" rx="371" ry="179" fill="#7A7064" opacity="0.6499999999999999"/>
+<ellipse cx="811" cy="558.0" rx="224" ry="148" fill="#7A7064" opacity="0.7999999999999999"/>
+<rect y="558.0" width="900" height="342.0" fill="#D8C9A8"/>
+<rect x="108.0" y="126.00000000000001" width="684.0" height="324.0" fill="#2F4A3A" stroke="#7A5A3A" stroke-width="16"/>
+<text x="162.0" y="252.00000000000003" font-family="Georgia,serif" font-size="64" fill="#E8E4D8">x² + 5x + 6 = 0</text>
+<text x="162.0" y="360.0" font-family="Georgia,serif" font-size="52" fill="#E8E4D8" opacity=".8">(x + 2)(x + 3) = 0</text>
+<rect x="90.0" y="702.0" width="140" height="22" fill="#8B6B4A"/><circle cx="160.0" cy="630.0" r="30" fill="#4A3426"/><rect x="120.0" y="657.0" width="80" height="60" rx="16" fill="#1F4E5F"/>
+<rect x="206.0" y="702.0" width="140" height="22" fill="#8B6B4A"/><circle cx="276.0" cy="630.0" r="30" fill="#4A3426"/><rect x="236.0" y="657.0" width="80" height="60" rx="16" fill="#1F4E5F"/>
+<rect x="322.0" y="702.0" width="140" height="22" fill="#8B6B4A"/><circle cx="392.0" cy="630.0" r="30" fill="#4A3426"/><rect x="352.0" y="657.0" width="80" height="60" rx="16" fill="#1F4E5F"/>
+<rect x="438.0" y="702.0" width="140" height="22" fill="#8B6B4A"/><circle cx="508.0" cy="630.0" r="30" fill="#4A3426"/><rect x="468.0" y="657.0" width="80" height="60" rx="16" fill="#1F4E5F"/>
+<rect x="554.0" y="702.0" width="140" height="22" fill="#8B6B4A"/><circle cx="624.0" cy="630.0" r="30" fill="#4A3426"/><rect x="584.0" y="657.0" width="80" height="60" rx="16" fill="#1F4E5F"/>
+<rect x="670.0" y="702.0" width="140" height="22" fill="#8B6B4A"/><circle cx="740.0" cy="630.0" r="30" fill="#4A3426"/><rect x="700.0" y="657.0" width="80" height="60" rx="16" fill="#1F4E5F"/>
+<rect y="840" width="900" height="60" fill="#163842"/>
+<polyline points="0,885 20,855 40,885 60,855 80,885 100,855 120,885 140,855 160,885 180,855 200,885 220,855 240,885 260,855 280,885 300,855 320,885 340,855 360,885 380,855 400,885 420,855 440,885 460,855 480,885 500,855 520,885 540,855 560,885 580,855 600,885 620,855 640,885 660,855 680,885 700,855 720,885 740,855 760,885 780,855 800,885 820,855 840,885 860,855 880,885 900,855 920,885 940,855" fill="none" stroke="#D9A21B" stroke-width="6"/>
+<rect x="24" y="24" rx="8" width="330" height="52" fill="rgba(0,0,0,.45)"/>
+<text x="44" y="58" font-family="Arial,sans-serif" font-size="24" fill="#fff">Replace with photo: maths lesson</text>
+</svg>

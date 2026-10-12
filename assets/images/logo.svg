@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 140" role="img" aria-label="Mucheke High School crest">
+  <path d="M60 4 L112 18 V68 C112 104 88 124 60 136 C32 124 8 104 8 68 V18 Z" fill="#1F4E5F" stroke="#D9A21B" stroke-width="5"/>
+  <polyline points="20,56 30,46 40,56 50,46 60,56 70,46 80,56 90,46 100,56" fill="none" stroke="#D9A21B" stroke-width="5" stroke-linejoin="round"/>
+  <path d="M34 104 V74 H60 V104 M60 74 H86 V104" fill="none" stroke="#fff" stroke-width="5"/>
+  <path d="M60 74 V104" stroke="#fff" stroke-width="5"/>
+  <text x="60" y="38" text-anchor="middle" font-family="Georgia,serif" font-size="20" font-weight="700" fill="#fff">MHS</text>
+</svg>

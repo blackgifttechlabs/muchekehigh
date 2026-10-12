@@ -1,0 +1,102 @@
+/* =========================================================
+   base.css — design tokens, reset, typography
+   Change school colours here and the whole site updates.
+   ========================================================= */
+
+:root {
+  /* Colours */
+  --river: #1F4E5F;        /* main colour (Mucheke River blue) */
+  --river-deep: #163842;   /* darker shade for footer, top bar */
+  --gold: #D9A21B;         /* accent (msasa gold) */
+  --gold-soft: #F6E7BF;
+  --stone: #EEF1F0;        /* light section background */
+  --granite: #5B5348;      /* muted text */
+  --ink: #1B2A30;          /* body text */
+  --white: #FFFFFF;
+
+  /* Type */
+  --font-head: "Zilla Slab", Georgia, "Times New Roman", serif;
+  --font-body: "Source Sans 3", "Segoe UI", Arial, sans-serif;
+
+  --step--1: 0.875rem;
+  --step-0: 1.0625rem;
+  --step-1: 1.3rem;
+  --step-2: 1.65rem;
+  --step-3: 2.1rem;
+  --step-4: clamp(2.4rem, 5vw, 3.4rem);
+  --step-5: clamp(3rem, 8vw, 5.6rem);
+
+  /* Layout */
+  --max: 1200px;
+  --gap: clamp(1rem, 3vw, 2rem);
+  --section: clamp(3.5rem, 8vw, 6.5rem);
+  --radius: 4px;
+  --header-h: 84px;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: var(--step-0);
+  line-height: 1.65;
+  color: var(--ink);
+  background: var(--white);
+  -webkit-font-smoothing: antialiased;
+}
+
+img, svg, video { display: block; max-width: 100%; }
+
+h1, h2, h3, h4 {
+  font-family: var(--font-head);
+  font-weight: 700;
+  line-height: 1.15;
+  color: var(--river-deep);
+  margin: 0 0 0.6em;
+}
+h1 { font-size: var(--step-4); }
+h2 { font-size: var(--step-3); }
+h3 { font-size: var(--step-2); }
+h4 { font-size: var(--step-1); }
+
+p { margin: 0 0 1.1em; max-width: 68ch; }
+
+a { color: var(--river); text-underline-offset: 3px; }
+a:hover { color: var(--river-deep); }
+
+:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: 3px;
+}
+
+ul { padding-left: 1.2em; }
+
+.skip-link {
+  position: absolute;
+  left: -999px;
+  top: 0;
+  background: var(--gold);
+  color: var(--ink);
+  padding: .6rem 1rem;
+  z-index: 1000;
+}
+.skip-link:focus { left: 1rem; }
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}

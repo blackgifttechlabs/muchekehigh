@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admissions | Mucheke High School</title>
+  <meta name="description" content="How to apply to Mucheke High School, fees and uniform.">
+  <link rel="icon" href="../assets/images/mucheke-crest-navy-icon.png" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&family=Zilla+Slab:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/layout.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+</head>
+<body data-root="../" data-page="admissions">
+  <div id="header-slot"></div>
+
+  <main id="main">
+    <section class="page-hero">
+      <img src="../assets/images/generated/school-bus-formal-portrait.webp" alt="Students in formal uniform boarding the school bus">
+      <div class="container">
+        <p class="breadcrumb"><a href="../index.html">Home</a> / Admissions</p>
+        <h1>Admissions</h1>
+        <p>How to join Mucheke High School in Form 1, Form 5 or another class.</p>
+      </div>
+    </section>
+    <div class="wall-band" aria-hidden="true"></div>
+
+    <section class="section">
+      <div class="container split">
+        <div>
+          <h2>How to apply</h2>
+          <ol class="steps">
+            <li><div><h3>Get the form</h3><p>Collect an application form from the school office or <a href="../assets/docs/application-form.pdf">download it here</a>.</p></div></li>
+            <li><div><h3>Fill it in</h3><p>Attach a copy of the birth certificate and the latest school report (Grade 7 results for Form 1, O Level results for Form 5).</p></div></li>
+            <li><div><h3>Hand it in</h3><p>Bring the form to the school office between 07:30 and 16:00, Monday to Friday.</p></div></li>
+            <li><div><h3>Wait for our reply</h3><p>We will call you to confirm a place and explain the next steps.</p></div></li>
+          </ol>
+        </div>
+        <div>
+          <h2>Ask about a place</h2>
+          <form class="form" data-check data-subject="Admission enquiry" novalidate>
+            <div class="form__row">
+              <div><label for="a-parent">Parent's name</label><input id="a-parent" name="Parent" required><p class="error">Please enter your name.</p></div>
+              <div><label for="a-phone">Phone</label><input id="a-phone" name="Phone" type="tel" required><p class="error">Please enter a phone number.</p></div>
+            </div>
+            <div class="form__row">
+              <div><label for="a-child">Student's name</label><input id="a-child" name="Student" required><p class="error">Please enter the student's name.</p></div>
+              <div><label for="a-form">Class wanted</label>
+                <select id="a-form" name="Class" required>
+                  <option value="">Choose a class</option>
+                  <option>Form 1</option><option>Form 2</option><option>Form 3</option>
+                  <option>Form 4</option><option>Form 5</option><option>Form 6</option>
+                </select><p class="error">Please choose a class.</p></div>
+            </div>
+            <div><label for="a-msg">Message (optional)</label><textarea id="a-msg" name="Message" rows="4"></textarea></div>
+            <button class="btn btn--river" type="submit">Send enquiry</button>
+            <p class="form-status" role="status"></p>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--stone" id="fees">
+      <div class="container">
+        <h2>Fees</h2>
+        <p>Fees are set by the School Development Committee and approved by the Ministry each year. <!-- TODO: add the real fees --></p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Class</th><th>Fees per term (USD)</th><th>Levy per term (USD)</th></tr></thead>
+            <tbody>
+              <tr><td>Forms 1 – 4</td><td>[amount]</td><td>[amount]</td></tr>
+              <tr><td>Forms 5 – 6</td><td>[amount]</td><td>[amount]</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="btn-row"><a class="btn btn--outline-dark" href="../assets/docs/fees-structure.pdf">Download fees structure</a></div>
+      </div>
+    </section>
+
+    <section class="section" id="uniform">
+      <div class="container">
+        <h2>Uniform</h2>
+        <!-- TODO: describe the real uniform -->
+        <div class="info-grid">
+          <div class="info-card"><h3>Boys</h3><p>[Shirt, trousers or shorts, jersey, tie, shoes]</p></div>
+          <div class="info-card"><h3>Girls</h3><p>[Dress or skirt and blouse, jersey, tie, shoes]</p></div>
+          <div class="info-card"><h3>Sport</h3><p>[House T-shirt, shorts, takkies]</p></div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <div id="footer-slot"></div>
+
+  <script src="../assets/js/data/site.js"></script>
+  <script src="../assets/js/data/news.js"></script>
+  <script src="../assets/js/components.js"></script>
+  <script src="../assets/js/main.js"></script>
+</body>
+</html>

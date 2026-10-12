@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>News | Mucheke High School</title>
+  <meta name="description" content="Latest news from Mucheke High School.">
+  <link rel="icon" href="../assets/images/mucheke-crest-navy-icon.png" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&family=Zilla+Slab:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/layout.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+</head>
+<body data-root="../" data-page="news">
+  <div id="header-slot"></div>
+
+  <main id="main">
+    <section class="page-hero">
+      <img src="../assets/images/generated/outdoor-project-banner.webp" alt="Students working on a recycled-bottle planter">
+      <div class="container">
+        <p class="breadcrumb"><a href="../index.html">Home</a> / News</p>
+        <h1>News</h1>
+        <p>Stories from our classrooms, sports fields and community.</p>
+      </div>
+    </section>
+    <div class="wall-band" aria-hidden="true"></div>
+
+    <section class="section section--stone">
+      <div class="container">
+        <article id="news-story" hidden style="max-width:780px"></article>
+        <div id="news-browse">
+          <div class="filters" id="news-filters" aria-label="Filter news"></div>
+          <div class="news-grid" id="news-list"></div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <div id="footer-slot"></div>
+
+  <script src="../assets/js/data/site.js"></script>
+  <script src="../assets/js/data/news.js"></script>
+  <script src="../assets/js/components.js"></script>
+  <script src="../assets/js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,217 @@
+/* =========================================================
+   layout.css — top bar, header, navigation, sections, footer
+   ========================================================= */
+
+.container {
+  width: min(100% - 2 * var(--gap), var(--max));
+  margin-inline: auto;
+}
+
+.section { padding-block: var(--section); }
+.section--stone { background: var(--stone); }
+.section--river { background: var(--river); color: var(--white); }
+.section--river h2, .section--river h3 { color: var(--white); }
+
+/* ---------- Stone wall band (Great Zimbabwe chevron) ---------- */
+.wall-band {
+  height: 22px;
+  background:
+    linear-gradient(135deg, var(--gold) 25%, transparent 25%) -11px 0 / 22px 22px,
+    linear-gradient(225deg, var(--gold) 25%, transparent 25%) -11px 0 / 22px 22px,
+    var(--river-deep);
+}
+
+/* ---------- Top bar ---------- */
+.topbar {
+  background: var(--river-deep);
+  color: var(--white);
+  font-size: var(--step--1);
+}
+.topbar .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  min-height: 40px;
+}
+.topbar__info { opacity: .85; }
+.topbar__links { display: flex; gap: .25rem; }
+.topbar__links a {
+  color: var(--white);
+  text-decoration: none;
+  padding: .5rem .8rem;
+}
+.topbar__links a:hover { background: rgba(255,255,255,.1); color: var(--white); }
+.topbar__links .topbar__apply { background: var(--gold); color: var(--ink); font-weight: 700; }
+.topbar__links .topbar__apply:hover { background: #E7B53A; color: var(--ink); }
+
+/* ---------- Header ---------- */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--white);
+  border-bottom: 1px solid #DDE3E2;
+  transition: box-shadow .2s;
+}
+.site-header.is-scrolled { box-shadow: 0 2px 14px rgba(22,56,66,.12); }
+.site-header .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: var(--header-h);
+  gap: 1rem;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  text-decoration: none;
+  color: var(--river-deep);
+}
+.brand img { width: 52px; height: auto; flex-shrink: 0; }
+.brand__name {
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: 1.35rem;
+  line-height: 1.05;
+}
+.brand__tag { display: block; font-family: var(--font-body); font-weight: 400; font-size: .8rem; color: var(--granite); }
+
+/* ---------- Main nav ---------- */
+.nav__list {
+  list-style: none;
+  display: flex;
+  margin: 0;
+  padding: 0;
+}
+.nav__item { position: relative; }
+.nav__link {
+  display: flex;
+  align-items: center;
+  gap: .3rem;
+  padding: 0 .85rem;
+  min-height: var(--header-h);
+  font-weight: 600;
+  color: var(--ink);
+  text-decoration: none;
+  background: none;
+  border: 0;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+.nav__link:hover, .nav__item.is-current > .nav__link { color: var(--river); box-shadow: inset 0 -4px 0 var(--gold); }
+.nav__caret { width: 10px; height: 10px; transition: transform .2s; }
+
+.subnav {
+  list-style: none;
+  margin: 0;
+  padding: .5rem 0;
+  position: absolute;
+  left: 0;
+  top: 100%;
+  min-width: 220px;
+  background: var(--river);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(6px);
+  transition: opacity .15s, transform .15s, visibility .15s;
+}
+.nav__item:hover > .subnav,
+.nav__item:focus-within > .subnav,
+.nav__item.is-open > .subnav { opacity: 1; visibility: visible; transform: none; }
+.subnav a {
+  display: block;
+  padding: .55rem 1.1rem;
+  color: var(--white);
+  text-decoration: none;
+}
+.subnav a:hover { background: var(--river-deep); color: var(--gold); }
+
+.nav-toggle {
+  display: none;
+  background: none;
+  border: 2px solid var(--river);
+  color: var(--river);
+  padding: .45rem .8rem;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+@media (max-width: 1020px) {
+  .nav-toggle { display: block; }
+  .topbar__info { display: none; }
+  .nav {
+    position: fixed;
+    inset: calc(var(--header-h) + 40px) 0 0 0;
+    background: var(--white);
+    overflow-y: auto;
+    transform: translateX(100%);
+    transition: transform .25s;
+  }
+  .nav.is-open { transform: none; }
+  .nav__list { flex-direction: column; padding: 1rem var(--gap) 3rem; }
+  .nav__link { min-height: 52px; width: 100%; justify-content: space-between; border-bottom: 1px solid #E3E8E7; padding: 0; }
+  .nav__link:hover, .nav__item.is-current > .nav__link { box-shadow: none; }
+  .subnav {
+    position: static;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    display: none;
+    background: var(--stone);
+  }
+  .nav__item:hover > .subnav, .nav__item:focus-within > .subnav { display: none; }
+  .nav__item.is-open > .subnav { display: block; }
+  .nav__item.is-open .nav__caret { transform: rotate(180deg); }
+  .subnav a { color: var(--ink); }
+  .subnav a:hover { background: var(--gold-soft); color: var(--ink); }
+}
+
+/* ---------- Footer ---------- */
+.site-footer {
+  background: var(--river-deep);
+  color: rgba(255,255,255,.85);
+  font-size: .97rem;
+}
+.site-footer a { color: var(--white); }
+.site-footer a:hover { color: var(--gold); }
+.footer__grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr 1fr;
+  gap: 2.5rem;
+  padding-block: 4rem 3rem;
+}
+.site-footer h4 { color: var(--gold); font-size: 1.15rem; }
+.footer__links { list-style: none; padding: 0; margin: 0; }
+.footer__links li { margin-bottom: .4rem; }
+.footer__links a { text-decoration: none; }
+.footer__brand img { width: 96px; height: auto; margin-bottom: 1rem; }
+.footer__social { display: flex; gap: .6rem; margin-top: 1rem; }
+.footer__social a {
+  display: grid;
+  place-items: center;
+  width: 40px; height: 40px;
+  border: 1px solid rgba(255,255,255,.35);
+}
+.footer__social svg { width: 18px; height: 18px; fill: currentColor; }
+.footer__bottom {
+  border-top: 1px solid rgba(255,255,255,.15);
+  padding-block: 1.2rem;
+  font-size: var(--step--1);
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: .5rem;
+}
+
+@media (max-width: 900px) {
+  .footer__grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 560px) {
+  .footer__grid { grid-template-columns: 1fr; }
+  .topbar__links a:not(.topbar__apply) { display: none; }
+}
