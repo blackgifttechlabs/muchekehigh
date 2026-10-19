@@ -12,48 +12,18 @@
   const current = body.dataset.page || "";
   const S = window.SITE || {};
 
-  // Menu: edit here to add or remove pages
+  // Menu: edit here to add or remove pages (plain links, no dropdowns)
   const MENU = [
     { label: "Home", href: "index.html", page: "home" },
-    {
-      label: "About", href: "pages/about.html", page: "about",
-      children: [
-        { label: "Welcome", href: "pages/about.html" },
-        { label: "Our values", href: "pages/about.html#values" },
-        { label: "History", href: "pages/history.html" },
-        { label: "Leadership", href: "pages/about.html#leadership" }
-      ]
-    },
-    {
-      label: "Academics", href: "pages/academics.html", page: "academics",
-      children: [
-        { label: "Forms 1 – 2", href: "pages/academics.html#junior" },
-        { label: "O Level (Forms 3 – 4)", href: "pages/academics.html#olevel" },
-        { label: "A Level (Forms 5 – 6)", href: "pages/academics.html#alevel" },
-        { label: "Subjects", href: "pages/academics.html#subjects" }
-      ]
-    },
-    {
-      label: "Student life", href: "pages/sport.html", page: "life",
-      children: [
-        { label: "Sport", href: "pages/sport.html" },
-        { label: "Clubs and culture", href: "pages/clubs.html" }
-      ]
-    },
-    {
-      label: "Admissions", href: "pages/admissions.html", page: "admissions",
-      children: [
-        { label: "How to apply", href: "pages/admissions.html" },
-        { label: "Fees", href: "pages/admissions.html#fees" },
-        { label: "Uniform", href: "pages/admissions.html#uniform" }
-      ]
-    },
+    { label: "About", href: "pages/about.html", page: "about" },
+    { label: "Academics", href: "pages/academics.html", page: "academics" },
+    { label: "Student life", href: "pages/sport.html", page: "life" },
+    { label: "Admissions", href: "pages/admissions.html", page: "admissions" },
     { label: "News", href: "pages/news.html", page: "news" },
     { label: "Contact", href: "pages/contact.html", page: "contact" }
   ];
 
   const url = (href) => root + href;
-  const caret = '<svg class="nav__caret" viewBox="0 0 10 10" aria-hidden="true"><path d="M1 3l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>';
 
   const icons = {
     facebook: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 8h3V4h-3c-2.8 0-5 2.2-5 5v2H7v4h2v7h4v-7h3l1-4h-4V9c0-.6.4-1 1-1z"/></svg>',
@@ -67,38 +37,21 @@
     .join("");
 
   function navHTML() {
-    return MENU.map((item, i) => {
+    return MENU.map((item) => {
       const isCurrent = item.page === current ? " is-current" : "";
-      if (!item.children) {
-        return `<li class="nav__item${isCurrent}"><a class="nav__link" href="${url(item.href)}"${isCurrent ? ' aria-current="page"' : ""}>${item.label}</a></li>`;
-      }
-      const sub = item.children.map((c) => `<li><a href="${url(c.href)}">${c.label}</a></li>`).join("");
-      return `<li class="nav__item has-sub${isCurrent}">
-        <button class="nav__link" type="button" aria-expanded="false" aria-controls="sub-${i}">${item.label}${caret}</button>
-        <ul class="subnav" id="sub-${i}">${sub}</ul>
-      </li>`;
+      return `<li class="nav__item${isCurrent}"><a class="nav__link" href="${url(item.href)}"${isCurrent ? ' aria-current="page"' : ""}>${item.label}</a></li>`;
     }).join("");
   }
 
   const header = `
   <a class="skip-link" href="#main">Skip to content</a>
-  <div class="topbar">
-    <div class="container">
-      <span class="topbar__info">${S.phone || ""} &nbsp;|&nbsp; ${S.officeHours || ""}</span>
-      <nav class="topbar__links" aria-label="Quick links">
-        <a href="${url("pages/news.html")}">News</a>
-        <a href="${url("pages/contact.html")}">Contact</a>
-        <a class="topbar__apply" href="${url("pages/admissions.html")}">Apply now</a>
-      </nav>
-    </div>
-  </div>
   <header class="site-header" id="site-header">
     <div class="container">
-      <a class="brand" href="${url("index.html")}">
+      <a class="header-brand" href="${url("index.html")}">
         <img src="${url("assets/images/mucheke-crest-navy-hd.png")}" alt="Mucheke High School crest" width="52" height="77">
-        <span class="brand__name">Mucheke High<span class="brand__tag">${S.tagline || ""}</span></span>
+        <span class="header-brand__name" aria-label="Mucheke High"><span aria-hidden="true">Mucheke</span><span aria-hidden="true">High</span></span>
       </a>
-      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="main-nav">Menu</button>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="main-nav" aria-label="Open menu"><span aria-hidden="true"></span><span aria-hidden="true"></span><span aria-hidden="true"></span></button>
       <nav class="nav" id="main-nav" aria-label="Main">
         <ul class="nav__list">${navHTML()}</ul>
       </nav>
@@ -107,20 +60,25 @@
 
   const year = new Date().getFullYear();
   const footer = `
-  <div class="wall-band" aria-hidden="true"></div>
   <footer class="site-footer">
+    <div class="container footer__idrow">
+      <div class="footer__id">
+        <img src="${url("assets/images/mucheke-crest-navy-hd.png")}" alt="Mucheke High School crest" width="48" height="71">
+        <span>${S.name}</span>
+      </div>
+    </div>
     <div class="container footer__grid">
-      <div class="footer__brand">
-        <img src="${url("assets/images/mucheke-crest-navy-hd.png")}" alt="Mucheke High School crest" width="96" height="142">
-        <p><strong>${S.name}</strong><br>${S.motto || ""}</p>
+      <div class="footer__about">
+        <h4>Our vision</h4>
+        <p class="footer__vision">${S.vision || ""}</p>
         <div class="footer__social">${socialLinks}</div>
       </div>
       <div>
-        <h4>Links</h4>
+        <h4>Quick links</h4>
         <ul class="footer__links">
           <li><a href="${url("pages/about.html")}">About us</a></li>
           <li><a href="${url("pages/academics.html")}">Academics</a></li>
-          <li><a href="${url("pages/admissions.html")}">Apply</a></li>
+          <li><a href="${url("pages/admissions.html")}">Admissions</a></li>
           <li><a href="${url("pages/news.html")}">News</a></li>
           <li><a href="${url("pages/contact.html")}">Contact</a></li>
         </ul>
@@ -137,9 +95,19 @@
         <p><strong>GPS</strong><br>${S.gps || ""}</p>
       </div>
     </div>
+    <div class="container footer__partners">
+      <a class="footer__partner" href="https://www.zimsec.co.zw/" target="_blank" rel="noopener">
+        <img src="${url("assets/images/zimsec-crest-cropped.png")}" alt="ZIMSEC crest" width="52" height="53" loading="lazy">
+        <span><strong>ZIMSEC</strong>Zimbabwe School Examinations Council</span>
+      </a>
+      <a class="footer__partner" href="https://mopse.co.zw/" target="_blank" rel="noopener">
+        <img class="footer__arms" src="${url("assets/images/zimbabwe-coat-of-arms.png")}" alt="Zimbabwe coat of arms" width="56" height="50" loading="lazy">
+        <span><strong>Government school</strong>Ministry of Primary and Secondary Education</span>
+      </a>
+    </div>
     <div class="container footer__bottom">
       <span>© ${year} ${S.name}. All rights reserved.</span>
-      <span>A government school under the Ministry of Primary and Secondary Education</span>
+      <span>Forms 1 – 6 &middot; O Level and A Level &middot; ZIMSEC curriculum</span>
     </div>
   </footer>`;
 

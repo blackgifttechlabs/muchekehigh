@@ -12,60 +12,80 @@
   <link rel="stylesheet" href="../assets/css/base.css">
   <link rel="stylesheet" href="../assets/css/layout.css">
   <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/about.css">
 </head>
-<body data-root="../" data-page="about">
+<body data-root="../" data-page="about" data-header="full">
   <div id="header-slot"></div>
 
   <main id="main">
-    <section class="page-hero">
-      <img src="../assets/images/generated/veranda-friends-square.webp" alt="Friends walking along a classroom veranda">
-      <div class="container">
-        <p class="breadcrumb"><a href="../index.html">Home</a> / About</p>
-        <h1>About Mucheke High</h1>
-        <p>A government secondary school serving Mucheke, Rujeko and the wider city of Masvingo.</p>
-      </div>
-    </section>
-    <div class="wall-band" aria-hidden="true"></div>
-
-    <section class="section">
-      <div class="container split">
-        <div>
-          <h2>Welcome</h2>
-          <p class="lead">Mucheke High School stands in Mucheke, the oldest township in Masvingo and home to the city's main bus rank and stadium.</p>
-          <p>We are a government day school run under the Ministry of Primary and Secondary Education. Our students come from Mucheke, Rujeko, KMP, Runyararo and other parts of the city.</p>
-          <p>We follow the ZIMSEC curriculum from Form 1 to Form 6. Our teachers know their students by name, and many have given most of their working lives to this school.</p>
-          <p>Thank you for visiting our website. We hope it helps you get to know us.</p>
+    <section class="about-slider" aria-label="Discover Mucheke High" aria-roledescription="carousel">
+      <h1 class="about-sr">About Mucheke High School</h1>
+      <article class="about-slide about-slide--books is-active" aria-label="1 of 4" data-slide>
+        <div class="container about-slide__layout">
+          <div class="about-slide__copy"><p class="about-eyebrow">KNOWLEDGE. CONFIDENCE. POSSIBILITY.</p><h2>A strong start.<br><strong>A brighter future.</strong></h2><p>From the first page to the next chapter, discover learning at Mucheke High School.</p><a class="about-link" href="academics.html">Explore academics <span aria-hidden="true">→</span></a></div>
+          <div class="about-slide__art"><img src="../assets/images/generated/about-textbooks.png" alt="Three mathematics and science textbooks arranged like fanned cards" width="1536" height="1024"></div>
         </div>
-        <div class="split__img"><img src="../assets/images/generated/school-bus-formal-portrait.webp" alt="Students in formal uniform boarding the school bus"></div>
-      </div>
+      </article>
+      <article class="about-slide about-slide--bus" aria-label="2 of 4" data-slide hidden>
+        <div class="container about-slide__layout">
+          <div class="about-slide__copy"><p class="about-eyebrow">ROOTED IN MASVINGO</p><h2>Our school.<br><strong>Our community.</strong></h2><p>Get to know a government secondary school at the heart of Mucheke, Masvingo.</p><a class="about-link" href="#our-story">Discover our story <span aria-hidden="true">→</span></a></div>
+          <div class="about-slide__art about-slide__art--bus"><img src="../assets/images/mucheke-school-bus-transparent.png" alt="Mucheke High School bus in blue and white livery" width="2079" height="756"><span class="bus-reveal__wheel bus-reveal__wheel--front" aria-hidden="true"></span><span class="bus-reveal__wheel bus-reveal__wheel--rear" aria-hidden="true"></span></div>
+        </div>
+      </article>
+      <article class="about-slide about-slide--students" aria-label="3 of 4" data-slide hidden>
+        <div class="container about-slide__layout">
+          <div class="about-slide__copy"><p class="about-eyebrow">ROOM TO LEARN. SPACE TO GROW.</p><h2>Your journey.<br><strong>Your potential.</strong></h2><p>Six forms. New friendships. A world of possibilities beyond the classroom.</p><a class="about-link" href="admissions.html">Join Mucheke High <span aria-hidden="true">→</span></a></div>
+          <div class="about-slide__art about-students"><img src="../assets/images/generated/about-student-characters.png" alt="Relaxed 3D schoolboy and schoolgirl in Mucheke uniforms with backpacks and books" width="1024" height="1536"></div>
+        </div>
+      </article>
+      <article class="about-slide about-slide--campus" aria-label="4 of 4" data-slide hidden>
+        <div class="container about-slide__layout">
+          <div class="about-slide__copy"><p class="about-eyebrow">A VIEW FROM ABOVE</p><h2>Our school.<br><strong>Our space.</strong></h2><p>Discover the campus, from classroom blocks and courtyards to the open sports field.</p><a class="about-link" href="#our-story">Explore Mucheke <span aria-hidden="true">→</span></a></div>
+          <div class="about-slide__art about-campus-art">
+            <svg class="about-campus-filter" width="0" height="0" aria-hidden="true" focusable="false"><defs><filter id="campus-edge-mist" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB"><feMorphology in="SourceAlpha" operator="erode" radius="28" result="inner-campus"/><feGaussianBlur in="inner-campus" stdDeviation="24" result="edge-fade"/><feComposite in="SourceGraphic" in2="edge-fade" operator="in"/></filter></defs></svg>
+            <img src="../assets/images/generated/mucheke-campus-aerial.png" alt="Enhanced aerial illustration of Mucheke High School campus" width="1395" height="1125">
+          </div>
+        </div>
+      </article>
+      <button class="about-arrow about-arrow--prev" type="button" aria-label="Previous slide">‹</button>
+      <button class="about-arrow about-arrow--next" type="button" aria-label="Next slide">›</button>
+      <div class="about-slider__controls"><button type="button" class="is-active" data-slide-to="0" aria-label="Show textbooks slide" aria-pressed="true"></button><button type="button" data-slide-to="1" aria-label="Show bus slide" aria-pressed="false"></button><button type="button" data-slide-to="2" aria-label="Show students slide" aria-pressed="false"></button><button type="button" data-slide-to="3" aria-label="Show campus slide" aria-pressed="false"></button><button class="about-pause" type="button" aria-label="Pause slideshow">Ⅱ</button></div>
+      <span class="about-sr" role="status" data-slide-status></span>
     </section>
 
-    <section class="section section--stone" id="values">
-      <div class="container">
-        <h2>Our values</h2>
-        <p>These values guide how we teach, learn and treat each other. <!-- TODO: replace with the school's official values --></p>
-        <div class="info-grid">
-          <div class="info-card"><h3>Hard work</h3><p>We do our best every day, in class and outside it.</p></div>
-          <div class="info-card"><h3>Respect</h3><p>We treat students, staff, parents and visitors with respect.</p></div>
-          <div class="info-card"><h3>Honesty</h3><p>We tell the truth and own our mistakes.</p></div>
-          <div class="info-card"><h3>Unity</h3><p>We help each other and learn together, the way our students work in groups.</p></div>
+    <section class="about-welcome" id="welcome">
+      <div class="container"><h2>Welcome to<br><strong>Mucheke High School</strong></h2><p class="about-welcome__text"><span class="about-welcome__funnel" aria-hidden="true"></span>Mucheke High School is a government secondary school in Mucheke, Masvingo, Zimbabwe. Our school brings together young people at different stages of their secondary education, from Form 1 through to Form 6. Learning here is about taking the next step: building knowledge, discovering interests and preparing for the opportunities ahead.</p></div>
+    </section>
+
+    <section class="about-story" id="our-story">
+      <img class="about-story__background" src="../assets/images/generated/about-classroom-hands.png" alt="Illustrative classroom scene of students raising their hands while a teacher leads a lesson" width="1672" height="941" loading="lazy">
+      <div class="about-story__shade" aria-hidden="true"></div>
+      <div class="container about-story__layout">
+        <div class="about-story__copy">
+          <h2>Mucheke <strong>High School</strong></h2>
+          <p>Mucheke High School serves learners from Masvingo’s busiest suburbs. With the support of partners and well-wishers, we make sure every learner, whatever their background, gets the chance to succeed.</p>
+          <details class="about-story__more">
+            <summary>Read more</summary>
+            <p>University records document former student Dr Peter Baricholo’s enrolment in 1983 and completion of O Level studies in 1986. In 2018, local reporting described improvements to the school’s perimeter and plans to develop learning spaces.</p>
+            <p class="about-source">Sources: <a href="https://www.nust.ac.zw/fas/images/CVs-external/Baricholo_CV_19012023_1.pdf" target="_blank" rel="noopener">NUST biography</a> · <a href="https://tellzim.com/mucheke-high-moves-to-build-image/" target="_blank" rel="noopener">TellZim, January 2018</a></p>
+          </details>
         </div>
       </div>
     </section>
 
-    <section class="section" id="leadership">
+    <section class="about-learning about-support" id="values" aria-labelledby="our-community-title">
       <div class="container">
-        <h2>Leadership</h2>
-        <p>The school is led by a head appointed by the Ministry, supported by deputy heads, senior teachers and the School Development Committee (SDC).</p>
-        <div class="info-grid">
-          <div class="info-card"><h3>School head</h3><p>[Name of current head]</p><!-- TODO: add the current head's name and photo --></div>
-          <div class="info-card"><h3>Deputy head</h3><p>[Name]</p></div>
-          <div class="info-card"><h3>SDC chairperson</h3><p>[Name]</p></div>
+        <h2 id="our-community-title">Our community</h2>
+        <p>Mucheke High School is supported by people who believe in its learners. In 2025, a book about Zimbabwean women entrepreneurs was launched in Masvingo. Every cent from its sales went to help disadvantaged learners at Mucheke High School.</p>
+        <div class="about-support__cards">
+          <article><img src="../assets/images/generated/group-study-formal-square.webp" alt="Students studying together" width="1024" height="1024" loading="lazy"><h3>Supporting Learners</h3></article>
+          <article><img src="../assets/images/generated/olevel-science-navy.webp" alt="Students taking part in a science practical" width="1536" height="1024" loading="lazy"><h3>Opening Opportunities</h3></article>
+          <article><img src="../assets/images/generated/veranda-friends-square.webp" alt="Friends together on the school veranda" width="1024" height="1024" loading="lazy"><h3>Growing Together</h3></article>
         </div>
-        <p class="note" style="margin-top:2rem">Former head Mr Vincent Maweni led the school from 2014 to 2024. <a href="history.html">Read our history</a>.</p>
       </div>
     </section>
 
+    <section class="about-community" id="leadership"><div class="container"><h2>A conversation starts here.</h2><p>Have a question about joining Mucheke High, subject choices or school life? Get in touch with the school to discuss the next step for your family.</p><a class="btn btn--river" href="contact.html">Contact the school <span aria-hidden="true">→</span></a></div></section>
   </main>
 
   <div id="footer-slot"></div>
@@ -74,5 +94,6 @@
   <script src="../assets/js/data/news.js"></script>
   <script src="../assets/js/components.js"></script>
   <script src="../assets/js/main.js"></script>
+  <script src="../assets/js/about.js"></script>
 </body>
 </html>

@@ -14,7 +14,28 @@
   /* 1. Sticky header shadow ------------------------------ */
   const header = document.getElementById("site-header");
   if (header) {
-    const onScroll = () => header.classList.toggle("is-scrolled", window.scrollY > 10);
+    // Pages with data-header="full" (the About page) start with the header already full width.
+    const fullFromStart = document.body.dataset.header === "full";
+    const targetOf = () => (fullFromStart ? 1 : Math.min(1, Math.max(0, window.scrollY / 240)));
+    let progress = targetOf();
+    header.style.setProperty("--header-progress", progress.toFixed(4));
+    header.classList.toggle("is-scrolled", progress > .05);
+    let frame = null;
+    let lastTime = 0;
+    const animateHeader = (now) => {
+      const target = targetOf();
+      const elapsed = lastTime ? Math.min(now - lastTime, 64) : 16;
+      lastTime = now;
+      progress = reduceMotion ? target : progress + (target - progress) * (1 - Math.exp(-elapsed / 180));
+      if (Math.abs(target - progress) < .001) progress = target;
+      header.style.setProperty("--header-progress", progress.toFixed(4));
+      header.classList.toggle("is-scrolled", progress > .05);
+      frame = progress !== target ? requestAnimationFrame(animateHeader) : null;
+      if (!frame) lastTime = 0;
+    };
+    const onScroll = () => {
+      if (frame === null) frame = requestAnimationFrame(animateHeader);
+    };
     window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();
   }
@@ -26,7 +47,8 @@
     toggle.addEventListener("click", () => {
       const open = nav.classList.toggle("is-open");
       toggle.setAttribute("aria-expanded", open);
-      toggle.textContent = open ? "Close" : "Menu";
+      toggle.classList.toggle("is-open", open);
+      toggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
       document.body.style.overflow = open ? "hidden" : "";
     });
   }
@@ -82,8 +104,248 @@
     };
     restart();
 
+    /* Motion reel: scenes of big type and sliding photo cards (replaces slider/video) */
+    let reel = false;
+    if (!reduceMotion) {
+      reel = true;
+      clearInterval(timer);
+      slides.forEach((sl) => sl.remove());
+      dotsWrap.remove();
+      hero.classList.add("hero--reel");
+
+      const img = (n) => `${root}assets/images/generated/${n}.webp`;
+      const cards = [
+        ["veranda-friends-square", "Learn together"],
+        ["olevel-science-navy", "Lab days"],
+        ["group-study-formal-square", "Study groups"],
+        ["girls-cricket-landscape", "Play hard"],
+        ["alevel-computers-navy", "Code club"]
+      ];
+      const letters = (t) => [...t].map((c, i) => `<i style="--i:${i}">${c}</i>`).join("");
+      // Letters reveal outward from the centre of the string.
+      const typed = (t) => {
+        const mid = (t.length - 1) / 2;
+        return [...t].map((c, i) => `<i style="--o:${Math.abs(i - mid).toFixed(1)}">${c === " " ? "&nbsp;" : c}</i>`).join("");
+      };
+      // Yellow scene: a short lead-in plus one big key word, sliding up through a mask one after another.
+      const phrases = [["We focus on", "Results"], ["We build", "Character"], ["We serve our", "Community"]];
+      const stage = document.createElement("div");
+      stage.className = "reel";
+      stage.setAttribute("aria-hidden", "true");
+      stage.innerHTML = `
+        <div class="scene scene--intro">
+          <svg class="zsvg" aria-hidden="true"><clipPath id="zclip" clipPathUnits="userSpaceOnUse"><text id="zt">HIGH SCHOOL</text></clipPath></svg>
+          <svg class="zmeas" aria-hidden="true"><text id="zm">HIGH SCHOOL</text></svg>
+          <div class="welcome welcome--dark"><span class="w-l">WEL</span><span class="w-r">COME</span></div>
+          <div class="intro__navy">
+            <div class="welcome welcome--light"><span class="w-l">WEL</span><span class="w-r">COME</span></div>
+            <div class="intro__lead intro__lead--to">TO</div>
+            <div class="intro__lead intro__lead--school"><span class="lead-a">MUCHEKE</span>&nbsp;<span class="lead-b">HIGH</span></div>
+            <div class="dgA">
+              <div class="slat slat--a"><div class="cam"><video muted loop playsinline preload="auto" src="${root}${hero.dataset.video}"></video></div></div>
+              <div class="edge--a"></div>
+            </div>
+            <div class="sub sub--a"><span>Masvingo &bull; Zimbabwe</span></div>
+            <div class="beatB">
+              <div class="slat slat--b"><div class="cam"><video muted loop playsinline preload="auto" src="${root}assets/video/students-collaborating.mp4"></video></div></div>
+              <div class="edge--b"></div>
+              <div class="intro__lead intro__lead--c"><span class="lead-c">HIGH SCHOOL</span></div>
+              <div class="sub sub--b"><span>O Level &bull; A Level</span></div>
+            </div>
+            <div class="beatC"><div class="cwin"></div></div>
+          </div>
+        </div>
+        <div class="scene scene--words">
+          <div class="phrases">
+            ${phrases.map(([lead, key], i) => `<div class="phrase${i === phrases.length - 1 ? " is-last" : ""}" style="--d:${i * 1.6}s"><span class="lead-in">${lead}</span><span class="key">${letters(key)}</span></div>`).join("")}
+          </div>
+        </div>
+        <div class="scene scene--cards">
+          <div class="orbit">
+            <p class="cards__kicker">Life at Mucheke</p>
+            <div class="cards">
+              ${cards.map(([n, label], i) => `
+                <figure class="card" style="--i:${i}">
+                  <img src="${img(n)}" alt="">
+                  <figcaption>${label}</figcaption>
+                </figure>`).join("")}
+            </div>
+          </div>
+        </div>
+        <div class="scene scene--dot">
+          <div class="tagline"><b class="dot"></b>${letters("Learn-always")}</div>
+        </div>
+        <div class="scene scene--brand">
+          <video class="brand__video" muted loop playsinline preload="auto" poster="${img("friends-on-bench-landscape")}" src="${root}${hero.dataset.video}"></video>
+          <div class="brand__shade"></div>
+          <div class="brand__navy">
+            <img class="brand__crest" src="${root}assets/images/mucheke-crest-navy-hd.png" alt="">
+            <div class="brand__name">${typed("MUCHEKE HIGH SCHOOL")}</div>
+          </div>
+        </div>`;
+      hero.insertBefore(stage, hero.querySelector(".hero__content"));
+
+      const scenes = [...stage.querySelectorAll(".scene")];
+      const locationCaption = scenes[0].querySelector(".sub--a span");
+      locationCaption.addEventListener("animationstart", (event) => {
+        if (event.animationName === "subANormal") {
+          locationCaption.textContent = "GOVERNMENT HIGH SCHOOL";
+        }
+      });
+      // Horizontal offset of the WEL|COME split point from the centre, so the square grows from the split.
+      const setSplit = () => {
+        const l = stage.querySelector(".w-l"), r = stage.querySelector(".w-r");
+        if (l && r) scenes[0].style.setProperty("--x0", `${(l.offsetWidth - r.offsetWidth) / 2}px`);
+      };
+      setSplit();
+      setTimeout(setSplit, 800);
+      addEventListener("resize", setSplit);
+      const lengths = [17400, 5200, 6000, 3800, 8000];
+      let cur = -1, paused = false;
+      const next = () => {
+        if (paused) return setTimeout(next, 400);
+        const prev = scenes[cur];
+        cur = cur + 1 >= scenes.length ? 1 : cur + 1; // intro plays once
+        scenes[cur].classList.remove("is-leaving");
+        scenes[cur].classList.add("is-on", "is-top");
+        if (prev) {
+          prev.classList.remove("is-top");
+          prev.classList.add("is-leaving");
+          setTimeout(() => prev.classList.remove("is-on", "is-leaving"), 900);
+        }
+        if (scenes[cur].contains(brandVideo)) { brandVideo.currentTime = 0; if (!paused) brandVideo.play().catch(() => {}); }
+        else brandVideo.pause();
+        setTimeout(next, lengths[cur]);
+      };
+      // Closing scene: the darkened school video plays, then navy covers it and the crest + name appear.
+      const brandVideo = scenes[scenes.length - 1].querySelector("video");
+      // Works out where each title lands. Desktop: along the diagonal edges (A leans /, B leans \).
+      // Phones: flat at the top. Everything is positioned by translate/rotate/scale from the scene centre.
+      let zoomGeo = null;
+      const setDiag = () => {
+        const sc = scenes[0], a = sc.querySelector(".lead-a"), c = sc.querySelector(".lead-c");
+        const box = sc.getBoundingClientRect(), r = a.getBoundingClientRect();
+        const clearance = parseFloat(getComputedStyle(a.parentElement).paddingTop);
+        const w = box.width, H = box.height, yc = (H + clearance - 88) / 2;
+        const cur = parseFloat(getComputedStyle(a).fontSize);
+        const nat = { x: r.left + r.width / 2 - box.left, y: r.top + r.height / 2 - box.top };
+        let ang = 0, A, B;
+        if (matchMedia("(max-width: 700px)").matches) {
+          const s = Math.min(2.4, (w * 0.8) / r.width), fs = cur * s;
+          const y = clearance + (H - clearance) * 0.2;
+          A = { x: w / 2, y, s, sx: w / 2, sy: y + fs * 0.62 };
+          B = { x: w / 2, y, s: (s * r.width) / c.offsetWidth, sx: w / 2, sy: y + fs * 0.62 };
+        } else {
+          ang = Math.atan2(H, 0.55 * w);                   // both edges drop 55% of the width over the full height
+          const sin = Math.sin(ang), cos = Math.cos(ang);
+          const len = Math.hypot(0.55 * w, H);
+          // Fit the entire rotated word below the header, including its uppermost corner.
+          const wordRatio = a.offsetWidth / cur;
+          const heightRatio = Math.max(a.offsetHeight / cur, c.offsetHeight / parseFloat(getComputedStyle(c).fontSize));
+          const topExtent = cos * 0.62 + (wordRatio * sin + heightRatio * cos) / 2;
+          const bottomExtent = Math.max(.01, (wordRatio * sin + heightRatio * cos) / 2 - cos * 0.62);
+          const fs = Math.max(1, Math.min(len * 0.135,
+            (yc - clearance - 20) / topExtent,
+            (H - 112 - yc) / bottomExtent));
+          const gap = fs * 0.62, sgap = gap + fs * 0.68;
+          const xa = w * (0.65 - 0.55 * yc / H);           // edge A (/) at the centre line
+          const xb = w * (0.40 + 0.55 * yc / H);           // edge B (\) at the centre line
+          A = { x: xa - sin * gap, y: yc - cos * gap, s: fs / cur, sx: xa - sin * sgap, sy: yc - cos * sgap };
+          B = { x: xb + sin * gap, y: yc - cos * gap, s: (fs / cur * r.width) / c.offsetWidth, sx: xb + sin * sgap, sy: yc - cos * sgap };
+        }
+        // Straightened ("normal") state: centred, name over caption.
+        const sn = Math.min(2.6, (w * 0.6) / r.width), fsn = cur * sn;
+        const N = { x: w / 2, y: yc - fsn * 0.2, s: sn, sx: w / 2, sy: yc + fsn * 0.5 };
+        // Straightened state of HIGH SCHOOL too (it is what the letter zoom starts from).
+        const baseC = parseFloat(getComputedStyle(c).fontSize);
+        const scC = Math.min(2.8, (w * 0.6) / c.offsetWidth), fsC = baseC * scC;
+        const cyC = yc - fsC * 0.2;
+        zoomGeo = { w, H, cy: cyC, scale: scC };
+        const set = (k, v) => sc.style.setProperty(k, v);
+        set("--cnx", "0px"); set("--cny", `${cyC - yc}px`); set("--cns", scC.toFixed(3));
+        set("--sbnx", "0px"); set("--sbny", `${yc + fsC * 0.5 - yc}px`);
+        set("--rot", `${-ang}rad`); set("--rotb", `${ang}rad`);
+        set("--ax", `${A.x - nat.x}px`); set("--ay", `${A.y - nat.y}px`); set("--as", A.s.toFixed(3));
+        set("--nx", `${N.x - nat.x}px`); set("--ny", `${N.y - nat.y}px`); set("--ns", N.s.toFixed(3));
+        set("--sax", `${A.sx - w / 2}px`); set("--say", `${A.sy - yc}px`);
+        set("--snx", `${N.sx - w / 2}px`); set("--sny", `${N.sy - yc}px`);
+        set("--bx", `${B.x - w / 2}px`); set("--by", `${B.y - yc}px`); set("--bs", B.s.toFixed(3));
+        set("--sbx", `${B.sx - w / 2}px`); set("--sby", `${B.sy - yc}px`);
+      };
+      setTimeout(setDiag, 3500);
+
+      // Letter zoom: a gold fill is clipped to the letters of HIGH SCHOOL, then the letter shapes are
+      // scaled up around the "I" until its stem fills the screen. The gold words scene takes over from there.
+      const cwin = scenes[0].querySelector(".cwin");
+      const zt = scenes[0].querySelector("#zt"), zm = scenes[0].querySelector("#zm");
+      let zoom = null;
+      const prepZoom = () => {
+        if (!zoomGeo) setDiag();
+        const c = scenes[0].querySelector(".lead-c"), cs = getComputedStyle(c);
+        const fs = parseFloat(cs.fontSize) * zoomGeo.scale, ls = (parseFloat(cs.letterSpacing) || 0) * zoomGeo.scale;
+        for (const el of [zt, zm]) {
+          el.setAttribute("x", zoomGeo.w / 2);
+          el.setAttribute("y", zoomGeo.cy);
+          el.setAttribute("text-anchor", "middle");
+          el.setAttribute("dominant-baseline", "central");
+          el.style.cssText = `font:700 ${fs}px "Source Sans 3","Segoe UI",Arial,sans-serif;letter-spacing:${ls}px`;
+        }
+        let zx = zoomGeo.w / 2, zy = zoomGeo.cy;
+        try { const e = zm.getExtentOfChar(1); zx = e.x + e.width / 2; zy = e.y + e.height / 2; } catch (_) {}
+        zoom = { zx, zy, fs };
+        cwin.style.clipPath = "url(#zclip)";
+        cwin.style.webkitClipPath = "url(#zclip)";
+      };
+      const runZoom = () => {
+        if (!zoom) return;
+        const { zx, zy, fs } = zoom, { w, H } = zoomGeo, D = 1300, t0 = performance.now();
+        // Browsers stop drawing clip shapes at extreme zoom, so the letter only grows to ~30x. At that size the
+        // stem of the "I" is a tall bar; that bar then widens to the full screen, which is the same gold fill.
+        const smax = 30;
+        const step = (now) => {
+          const p = Math.min(1, (now - t0) / D);
+          const e = p < .5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2;
+          const S = Math.exp(Math.log(smax) * e);
+          // The zoomed letter drifts to the screen centre as it grows, so the middle is never an empty gap.
+          const px = zx + (w / 2 - zx) * e, py = zy + (H / 2 - zy) * e;
+          zt.setAttribute("transform", `translate(${px} ${py}) scale(${S}) translate(${-zx} ${-zy})`);
+          if (p < 1) return requestAnimationFrame(step);
+          const bar = Math.min(w, 0.14 * fs * smax), side = Math.max(0, (w - bar) / 2);
+          cwin.style.clipPath = `inset(0 ${side}px)`;
+          cwin.style.webkitClipPath = `inset(0 ${side}px)`;
+          cwin.style.transition = "clip-path .4s cubic-bezier(.7,0,.3,1), -webkit-clip-path .4s cubic-bezier(.7,0,.3,1)";
+          requestAnimationFrame(() => requestAnimationFrame(() => {
+            cwin.style.clipPath = "inset(0px)";
+            cwin.style.webkitClipPath = "inset(0px)";
+          }));
+        };
+        requestAnimationFrame(step);
+      };
+      setTimeout(prepZoom, 14400);
+      setTimeout(runZoom, 15200);
+      const diagVideo = scenes[0].querySelector(".slat--a video");
+      const diagB = scenes[0].querySelector(".slat--b video");
+      let diagOn = false, bOn = false;
+      setTimeout(() => { diagOn = true; if (!paused) diagVideo.play().catch(() => {}); }, 3600);
+      setTimeout(() => { bOn = true; if (!paused) diagB.play().catch(() => {}); }, 8200);
+      next();
+      const pause = () => {
+        paused = document.hidden || !visible;
+        stage.classList.toggle("is-paused", paused);
+        if (paused) { brandVideo.pause(); diagVideo.pause(); diagB.pause(); }
+        else {
+          if (scenes[cur] && scenes[cur].contains(brandVideo)) brandVideo.play().catch(() => {});
+          if (diagOn) diagVideo.play().catch(() => {});
+          if (bOn) diagB.play().catch(() => {});
+        }
+      };
+      let visible = true;
+      new IntersectionObserver(([e]) => { visible = e.isIntersecting; pause(); }).observe(hero);
+      document.addEventListener("visibilitychange", pause);
+    }
+
     const videoSrc = hero.dataset.video;
-    if (videoSrc && !reduceMotion) {
+    if (videoSrc && !reduceMotion && !reel) {
       const v = document.createElement("video");
       v.className = "hero__video";
       Object.assign(v, { muted: true, loop: true, autoplay: true, playsInline: true });
@@ -206,6 +468,37 @@
       }
     });
   });
+  /* 6b. Why Mucheke High: quote slider ------------------- */
+  document.querySelectorAll("[data-why]").forEach((stage) => {
+    const quotes = window.TESTIMONIALS || [];
+    const slides = stage.querySelector(".why__slides");
+    if (!quotes.length) { stage.closest(".why").hidden = true; return; }
+    const esc = (t) => String(t).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+    slides.innerHTML = quotes.map((q, i) => `
+      <figure class="why__slide${i === 0 ? " is-active" : ""}">
+        <h3>${esc(q.role)}</h3>
+        <blockquote>&ldquo;${esc(q.quote)}&rdquo;</blockquote>
+        <figcaption><strong>${esc(q.name)}</strong><em>${esc(q.note || "")}</em></figcaption>
+      </figure>`).join("");
+    const items = [...slides.children];
+    let at = 0, timer = null;
+    const go = (n) => {
+      items[at].classList.remove("is-active");
+      at = (n + items.length) % items.length;
+      items[at].classList.add("is-active");
+    };
+    const restart = () => {
+      clearInterval(timer);
+      if (!reduceMotion && items.length > 1) timer = setInterval(() => go(at + 1), 9000);
+    };
+    stage.querySelector(".why__arrow--prev").addEventListener("click", () => { go(at - 1); restart(); });
+    stage.querySelector(".why__arrow--next").addEventListener("click", () => { go(at + 1); restart(); });
+    if (items.length < 2) stage.querySelectorAll(".why__arrow").forEach((b) => (b.hidden = true));
+    stage.addEventListener("mouseenter", () => clearInterval(timer));
+    stage.addEventListener("mouseleave", restart);
+    restart();
+  });
+
   /* 7. Scroll choreography: progressive enhancement, no hidden content. */
   const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
   if (!motionPreference.matches && "IntersectionObserver" in window && "animate" in Element.prototype) {
@@ -296,4 +589,78 @@
       progress.remove();
     });
   }
+})();
+
+/* Bus travels along the tour edge; totals rise after it passes. */
+(function () {
+  const section = document.querySelector('.bus-reveal'); // optional: the bus still drives without the totals block
+  const stage = document.querySelector('.school-photo');
+  const bus = stage?.querySelector('.bus-reveal__bus img');
+  if (!stage || !bus) return;
+  const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const counters = section ? [...section.querySelectorAll('[data-count]')] : [];
+  const frames = new Set();
+  let started = false;
+  const showStats = () => {
+    if (started) return;
+    started = true;
+    if (section) section.classList.add('is-counting');
+    counters.forEach((counter, index) => {
+      const target = Number(counter.dataset.count);
+      if (motion.matches) { counter.textContent = `${target}+`; return; }
+      counter.textContent = '0+';
+      const begins = performance.now() + index * 200 + 120;
+      const count = (now) => {
+        const progress = Math.min(1, Math.max(0, (now - begins) / 1900));
+        const eased = 1 - Math.pow(1 - progress, 4);
+        counter.textContent = `${Math.round(target * eased)}+`;
+        if (progress < 1 && !motion.matches) {
+          const id = requestAnimationFrame((time) => { frames.delete(id); count(time); });
+          frames.add(id);
+        } else counter.textContent = `${target}+`;
+      };
+      count(performance.now());
+    });
+  };
+  stage.addEventListener('animationend', (event) => {
+    if (event.target === stage && event.animationName === 'admissionsDrive') showStats();
+  });
+  motion.addEventListener('change', () => {
+    if (!motion.matches) return;
+    frames.forEach(cancelAnimationFrame);
+    frames.clear();
+    counters.forEach((counter) => { counter.textContent = `${counter.dataset.count}+`; });
+    if (stage.classList.contains('is-driving')) showStats();
+  });
+  const observer = new IntersectionObserver(async ([entry]) => {
+    if (!entry.isIntersecting) return;
+    observer.disconnect();
+    try { await bus.decode(); } catch (_) { /* Preserve text if the image fails. */ }
+    stage.classList.add('is-driving');
+    if (motion.matches) showStats();
+  }, { threshold: .35 });
+  observer.observe(stage);
+})();
+
+/* Move closer to the school photograph as the visitor scrolls through it. */
+(function () {
+  const photo = document.querySelector('.school-photo');
+  if (!photo) return;
+  const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  let frame = null, visible = false;
+  const paint = () => {
+    frame = null;
+    if (motion.matches) { photo.style.removeProperty('--photo-scale'); return; }
+    const bounds = photo.getBoundingClientRect();
+    const progress = Math.max(0, Math.min(1, (window.innerHeight - bounds.top) / (window.innerHeight + bounds.height)));
+    const amount = window.matchMedia('(max-width: 700px)').matches ? .12 : .22;
+    photo.style.setProperty('--photo-scale', (1 + progress * amount).toFixed(4));
+  };
+  const schedule = () => {
+    if (visible && frame === null) frame = requestAnimationFrame(paint);
+  };
+  new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; schedule(); }).observe(photo);
+  window.addEventListener('scroll', schedule, { passive: true });
+  window.addEventListener('resize', schedule, { passive: true });
+  motion.addEventListener('change', paint);
 })();

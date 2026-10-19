@@ -1,0 +1,1 @@
+Built-in imagegen edit: Crop supplied transparent crest to bird, full circular emblem and ZIMSEC ribbon. Remove For Performance Measurement slogan. Preserve crisp details, original colors and transparent background.

@@ -12,61 +12,124 @@
   <link rel="stylesheet" href="../assets/css/base.css">
   <link rel="stylesheet" href="../assets/css/layout.css">
   <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/academics.css">
 </head>
-<body data-root="../" data-page="academics">
+<body data-root="../" data-page="academics" data-header="full">
   <div id="header-slot"></div>
 
   <main id="main">
-    <section class="page-hero">
-      <img src="../assets/images/generated/group-study-formal-square.webp" alt="Students studying together in formal uniform">
-      <div class="container">
-        <p class="breadcrumb"><a href="../index.html">Home</a> / Academics</p>
-        <h1>Academics</h1>
-        <p>We follow the ZIMSEC curriculum from Form 1 through to Form 6.</p>
+    <!-- HERO -->
+    <section class="acad-hero">
+      <div class="acad-wrap acad-hero__grid">
+        <div class="acad-hero__copy">
+          <p class="acad-eyebrow">Forms 1 – 6 &middot; ZIMSEC curriculum</p>
+          <h1><span>Our</span><strong>Academics</strong></h1>
+          <p class="acad-lead">We follow the ZIMSEC curriculum from Form 1 through to Form 6. Students build a firm base in the early forms, prepare for Ordinary Level exams, and then study in depth at Advanced Level.</p>
+          <div class="acad-actions">
+            <a class="btn btn--river" href="admissions.html">Apply now</a>
+            <a class="acad-textlink" href="#subjects">Explore subjects <span aria-hidden="true">→</span></a>
+          </div>
+        </div>
+        <div class="acad-hero__art">
+          <span class="acad-hero__blob" aria-hidden="true"></span>
+          <figure class="acad-figure acad-figure--a"><img src="../assets/images/generated/form-1-student.webp" alt="Illustrative Form 1 student in school uniform" width="557" height="941"><figcaption>Forms 1 – 2</figcaption></figure>
+          <figure class="acad-figure acad-figure--c"><img src="../assets/images/generated/form-5-student.webp" alt="Illustrative Form 5 student in school uniform" width="558" height="941"><figcaption>Forms 5 – 6</figcaption></figure>
+          <figure class="acad-figure acad-figure--b"><img src="../assets/images/generated/form-3-student.webp" alt="Illustrative Form 3 student in school uniform" width="557" height="941"><figcaption>Forms 3 – 4</figcaption></figure>
+        </div>
       </div>
     </section>
-    <div class="wall-band" aria-hidden="true"></div>
 
-    <section class="section" id="junior">
-      <div class="container split">
-        <div>
-          <h2>Forms 1 – 2: junior secondary</h2>
+    <!-- FIND OUT MORE -->
+    <section class="acad-more" aria-labelledby="acad-more-title">
+      <div class="acad-wrap">
+        <h2 id="acad-more-title">Find out more</h2>
+        <div class="acad-cards">
+          <article class="acad-card">
+            <p class="acad-card__num">01</p>
+            <h3>Junior secondary</h3>
+            <p>Forms 1 – 2. A firm base in core subjects, with help to settle in and form good study habits.</p>
+            <a href="#junior">Read more <span aria-hidden="true">→</span></a>
+          </article>
+          <article class="acad-card">
+            <p class="acad-card__num">02</p>
+            <h3>O Level</h3>
+            <p>Forms 3 – 4. Subject choices for ZIMSEC Ordinary Level, regular practicals and extra lessons before exams.</p>
+            <a href="#olevel">Read more <span aria-hidden="true">→</span></a>
+          </article>
+          <article class="acad-card">
+            <p class="acad-card__num">03</p>
+            <h3>A Level</h3>
+            <p>Forms 5 – 6. Three or four subjects in depth, preparing for university, college and work.</p>
+            <a href="#alevel">Read more <span aria-hidden="true">→</span></a>
+          </article>
+          <article class="acad-card">
+            <p class="acad-card__num">04</p>
+            <h3>Subjects</h3>
+            <p>Sciences, commercials, arts and languages, and practical subjects.</p>
+            <a href="#subjects">Read more <span aria-hidden="true">→</span></a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- STAGES -->
+    <section class="acad-stage" id="junior">
+      <div class="acad-wrap acad-stage__grid">
+        <div class="acad-stage__copy">
+          <p class="acad-eyebrow">Forms 1 – 2</p>
+          <h2>Junior <strong>secondary</strong></h2>
           <p>Students build a firm base in English, Mathematics, Shona, Science, Heritage Studies and other core subjects. Teachers help new students settle in and form good study habits.</p>
         </div>
-        <div class="split__img"><img src="../assets/images/generated/veranda-friends-square.webp" alt="Students in formal school uniform"></div>
+        <div class="acad-stage__img"><img src="../assets/images/generated/veranda-friends-square.webp" alt="Students in formal school uniform" loading="lazy"></div>
       </div>
     </section>
 
-    <section class="section section--stone" id="olevel">
-      <div class="container split split--reverse">
-        <div>
-          <h2>Forms 3 – 4: O Level</h2>
+    <section class="acad-stage acad-stage--tint acad-stage--flip" id="olevel">
+      <div class="acad-wrap acad-stage__grid">
+        <div class="acad-stage__copy">
+          <p class="acad-eyebrow">Forms 3 – 4</p>
+          <h2>Ordinary <strong>Level</strong></h2>
           <p>Students choose subjects for their ZIMSEC Ordinary Level exams. Science students do regular practicals. Extra lessons run in the weeks before exams.</p>
         </div>
-        <div class="split__img"><img src="../assets/images/generated/group-study-formal-square.webp" alt="Students studying together in formal uniform"></div>
+        <div class="acad-stage__img"><img src="../assets/images/generated/group-study-formal-square.webp" alt="Students studying together in formal uniform" loading="lazy"></div>
       </div>
     </section>
 
-    <section class="section" id="alevel">
-      <div class="container split">
-        <div>
-          <h2>Forms 5 – 6: A Level</h2>
+    <section class="acad-stage" id="alevel">
+      <div class="acad-wrap acad-stage__grid">
+        <div class="acad-stage__copy">
+          <p class="acad-eyebrow">Forms 5 – 6</p>
+          <h2>Advanced <strong>Level</strong></h2>
           <p>A Level students study three or four subjects in depth. They prepare for university, college and the world of work.</p>
           <!-- TODO: confirm which A Level streams the school offers -->
         </div>
-        <div class="split__img"><img src="../assets/images/generated/friends-on-bench-landscape.webp" alt="Students chatting during a break"></div>
+        <div class="acad-stage__img"><img src="../assets/images/generated/friends-on-bench-landscape.webp" alt="Students chatting during a break" loading="lazy"></div>
       </div>
     </section>
 
-    <section class="section section--stone" id="subjects">
-      <div class="container">
-        <h2>Subjects</h2>
-        <p>The list below shows the main subjects. <!-- TODO: update with the school's real subject list --></p>
-        <div class="info-grid">
-          <div class="info-card"><h3>Sciences</h3><ul><li>Mathematics</li><li>Combined Science</li><li>Physics</li><li>Chemistry</li><li>Biology</li><li>Computer Science</li></ul></div>
-          <div class="info-card"><h3>Commercials</h3><ul><li>Accounts</li><li>Commerce</li><li>Business Studies</li><li>Economics</li></ul></div>
-          <div class="info-card"><h3>Arts and languages</h3><ul><li>English Language</li><li>Literature in English</li><li>Shona</li><li>History</li><li>Geography</li><li>Family and Religious Studies</li></ul></div>
-          <div class="info-card"><h3>Practical subjects</h3><ul><li>Agriculture</li><li>Food and Nutrition</li><li>Fashion and Fabrics</li><li>Building Technology</li></ul></div>
+    <!-- SUBJECTS -->
+    <section class="acad-subjects" id="subjects">
+      <div class="acad-wrap">
+        <p class="acad-eyebrow">What we teach</p>
+        <h2>Our <strong>subjects</strong></h2>
+        <p class="acad-subjects__note">The list below shows the main subjects. <!-- TODO: update with the school's real subject list --></p>
+        <div class="acad-subjects__grid">
+          <div class="acad-subject"><h3>Sciences</h3><ul><li>Mathematics</li><li>Combined Science</li><li>Physics</li><li>Chemistry</li><li>Biology</li><li>Computer Science</li></ul></div>
+          <div class="acad-subject"><h3>Commercials</h3><ul><li>Accounts</li><li>Commerce</li><li>Business Studies</li><li>Economics</li></ul></div>
+          <div class="acad-subject"><h3>Arts and languages</h3><ul><li>English Language</li><li>Literature in English</li><li>Shona</li><li>History</li><li>Geography</li><li>Family and Religious Studies</li></ul></div>
+          <div class="acad-subject"><h3>Practical subjects</h3><ul><li>Agriculture</li><li>Food and Nutrition</li><li>Fashion and Fabrics</li><li>Building Technology</li></ul></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section class="acad-contact" aria-labelledby="acad-contact-title">
+      <div class="acad-wrap acad-contact__grid">
+        <h2 id="acad-contact-title">Contact us</h2>
+        <p>Questions about subjects or joining a form? Get in touch with the school office.</p>
+        <div class="acad-actions">
+          <a class="btn btn--gold" href="contact.html">Contact the office</a>
+          <a class="acad-textlink acad-textlink--light" href="admissions.html">How to apply <span aria-hidden="true">→</span></a>
         </div>
       </div>
     </section>

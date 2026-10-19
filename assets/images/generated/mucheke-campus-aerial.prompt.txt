@@ -1,0 +1,1 @@
+Built-in imagegen edit using supplied satellite source and yellow-boundary guide. Retain only campus within boundary; remove map labels, pins and exterior neighborhood to transparent alpha. Enhance aerial colors and clarity while retaining source building, field, tree and campus layout. No annotations or boundary line.

@@ -6,6 +6,7 @@ window.SITE = {
   name: "Mucheke High School",
   tagline: "Masvingo, Zimbabwe",
   motto: "Learning for life",               // TODO: replace with the real school motto
+  vision: "A school where every learner is equipped to learn, to lead and to serve their community.", // TODO: replace with the school's official vision statement
   phone: "+263 39 265533",                  // TODO: confirm (listed in directories as +263 396 5533)
   email: "info@muchekehigh.ac.zw",          // TODO: replace with the real email
   address: ["Mucheke", "Masvingo", "Zimbabwe"],
