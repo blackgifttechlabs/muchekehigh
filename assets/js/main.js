@@ -200,7 +200,7 @@
       setSplit();
       setTimeout(setSplit, 800);
       addEventListener("resize", setSplit);
-      const lengths = [17400, 5200, 6000, 3800, 8000];
+      const lengths = [20400, 5200, 6000, 3800, 8000];
       let cur = -1, paused = false;
       const next = () => {
         if (paused) return setTimeout(next, 400);
@@ -321,13 +321,13 @@
         };
         requestAnimationFrame(step);
       };
-      setTimeout(prepZoom, 14400);
-      setTimeout(runZoom, 15200);
+      setTimeout(prepZoom, 17400);
+      setTimeout(runZoom, 18200);
       const diagVideo = scenes[0].querySelector(".slat--a video");
       const diagB = scenes[0].querySelector(".slat--b video");
       let diagOn = false, bOn = false;
-      setTimeout(() => { diagOn = true; if (!paused) diagVideo.play().catch(() => {}); }, 3600);
-      setTimeout(() => { bOn = true; if (!paused) diagB.play().catch(() => {}); }, 8200);
+      setTimeout(() => { diagOn = true; if (!paused) diagVideo.play().catch(() => {}); }, 6600);
+      setTimeout(() => { bOn = true; if (!paused) diagB.play().catch(() => {}); }, 11200);
       next();
       const pause = () => {
         paused = document.hidden || !visible;

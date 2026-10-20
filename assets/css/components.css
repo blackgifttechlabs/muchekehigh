@@ -171,10 +171,8 @@
 .achievers-banner__photos, .achievers-banner__photos::after { position: absolute; inset: 0; }
 .achievers-banner__photos { z-index: -1; }
 .achievers-banner__photos::after { content: ""; background: rgba(0,0,0,.7); }
-.achievers-banner__photos img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; filter: grayscale(1); opacity: 0; animation: achieverPhoto 24s linear infinite; }
+.achievers-banner__photos img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; opacity: 1; }
 .achievers-banner__photos img:first-child { opacity: 1; }
-.achievers-banner__photos img:nth-child(2) { animation-delay: 8s; }
-.achievers-banner__photos img:nth-child(3) { animation-delay: 16s; }
 .achievers-banner__content h2 { color: #fff; font-family: var(--font-body); font-size: clamp(1.75rem, 3vw, 2.6rem); letter-spacing: .04em; margin-bottom: 18px; }
 .achievers-banner__content p { max-width: 1150px; margin: 0 auto 38px; font-size: clamp(1rem, 1.3vw, 1.2rem); }
 .achievers-banner__button { border-radius: 0; background: #3B2380; border-color: #3B2380; color: #fff; min-height: 60px; padding-inline: 32px; }
@@ -667,10 +665,14 @@ th { background: var(--river); color: var(--white); }
 @property --t { syntax: "<percentage>"; inherits: true; initial-value: -70%; }
 @property --r { syntax: "<percentage>"; inherits: true; initial-value: 40%; }
 @property --m { syntax: "<percentage>"; inherits: true; initial-value: 0%; }
-.scene--intro { background: #EFE7DD; padding: 0; --x0: 0px; }
+.scene--intro {
+  background: linear-gradient(rgba(0, 40, 48, .45), rgba(0, 40, 48, .45)), url("../images/sunlit-symmetrical-campus-courtyard.webp") center / cover no-repeat;
+  padding: 0; --x0: 0px;
+}
+.scene--intro .welcome--dark { color: var(--white); text-shadow: 0 2px 18px rgba(0, 0, 0, .35); }
 /* One variable (--sq = half-side of the square) drives both the square and the two text halves,
    so the gap between each half and the square is always identical. */
-.scene--intro.is-on { animation: squareGrow 1.1s cubic-bezier(.65,0,.35,1) .95s both; }
+.scene--intro.is-on { animation: squareGrow 1.1s cubic-bezier(.65,0,.35,1) 3.95s both; }
 @keyframes squareGrow { from { --sq: 0px; } to { --sq: 60vmax; } }
 .welcome {
   position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
@@ -705,8 +707,8 @@ th { background: var(--river); color: var(--white); }
   font: 700 clamp(2.4rem, 8.5vw, 7rem)/1 var(--font-body); letter-spacing: -.03em;
 }
 .intro__lead--school { font-size: clamp(2.6rem, 10.5vw, 9rem); letter-spacing: -.04em; }
-.scene--intro.is-on .intro__lead--to { animation: leadFade 1s ease 1.45s both; }
-.scene--intro.is-on .intro__lead--school { animation: leadIn .6s ease 2.45s both, hideLate .1s linear 9.4s forwards; }
+.scene--intro.is-on .intro__lead--to { animation: leadFade 1s ease 4.45s both; }
+.scene--intro.is-on .intro__lead--school { animation: leadIn .6s ease 5.45s both, hideLate .1s linear 12.4s forwards; }
 @keyframes hideLate { to { opacity: 0; } }
 @keyframes leadIn { from { opacity: 0; transform: scale(.85); filter: blur(10px); } to { opacity: 1; transform: none; filter: blur(0); } }
 @keyframes leadFade {
@@ -717,10 +719,10 @@ th { background: var(--river); color: var(--white); }
 }
 .lead-a, .lead-b, .lead-c, .sub span { display: inline-block; }
 /* HIGH drops away, MUCHEKE tilts onto the diagonal... */
-.scene--intro.is-on .lead-b { animation: highOut .5s ease 3.6s both; }
+.scene--intro.is-on .lead-b { animation: highOut .5s ease 6.6s both; }
 @keyframes highOut { to { opacity: 0; transform: translateY(40%) scale(.8); filter: blur(8px); } }
 /* ...and when the slat closes it straightens out and settles in the middle. */
-.scene--intro.is-on .lead-a { animation: toDiag 1s cubic-bezier(.16,1,.3,1) 3.7s both, toNormal 1.3s cubic-bezier(.7,0,.2,1) 6.3s forwards; }
+.scene--intro.is-on .lead-a { animation: toDiag 1s cubic-bezier(.16,1,.3,1) 6.7s both, toNormal 1.3s cubic-bezier(.7,0,.2,1) 9.3s forwards; }
 @keyframes toDiag { to { transform: translate(var(--ax, 0), var(--ay, 0)) rotate(var(--rot, 0)) scale(var(--as, 1)); } }
 @keyframes toNormal { to { transform: translate(var(--nx, 0), var(--ny, 0)) rotate(0rad) scale(var(--ns, 1)); } }
 
@@ -728,7 +730,7 @@ th { background: var(--river); color: var(--white); }
 .sub { font-size: clamp(.8rem, 1.5vw, 1.25rem); letter-spacing: .38em; color: var(--gold); text-transform: uppercase; }
 .sub--a { opacity: 1; }
 .sub--a span { opacity: 0; }
-.scene--intro.is-on .sub--a span { animation: subA .9s cubic-bezier(.16,1,.3,1) 4.5s both, subANormal 1.3s cubic-bezier(.7,0,.2,1) 6.3s forwards, hideLate .1s linear 9.4s forwards; }
+.scene--intro.is-on .sub--a span { animation: subA .9s cubic-bezier(.16,1,.3,1) 7.5s both, subANormal 1.3s cubic-bezier(.7,0,.2,1) 9.3s forwards, hideLate .1s linear 12.4s forwards; }
 @keyframes subA {
   from { opacity: 0; transform: translate(var(--sax, 0), var(--say, 0)) rotate(var(--rot, 0)) translateX(-24px); }
   to { opacity: 1; transform: translate(var(--sax, 0), var(--say, 0)) rotate(var(--rot, 0)); }
@@ -738,7 +740,7 @@ th { background: var(--river); color: var(--white); }
 /* Slat A: slanted video panel. --l is the position of its left (diagonal) edge: sweeps in to 65%, later sweeps
    right to 170% which covers the video with navy again. The gold edge rides the same variable. */
 .dgA { position: absolute; inset: 0; --l: 170%; }
-.scene--intro.is-on .dgA { animation: dgA 4s linear 3.6s both, hideLate .1s linear 9.4s forwards; }
+.scene--intro.is-on .dgA { animation: dgA 4s linear 6.6s both, hideLate .1s linear 12.4s forwards; }
 @keyframes dgA {
   0% { --l: 170%; animation-timing-function: cubic-bezier(.16,1,.3,1); }
   27.5% { --l: 65%; }
@@ -761,7 +763,7 @@ th { background: var(--river); color: var(--white); }
 /* Beat B: a purple stage wipes in from the left (slanted front), girls on the left, text on the right,
    so the diagonal now leans the other way. */
 .beatB { position: absolute; inset: 0; background: #3b2380; --t: -70%; opacity: 1; clip-path: polygon(0 0, var(--t) 0, calc(var(--t) + 55%) 100%, 0 100%); }
-.scene--intro.is-on .beatB { animation: wipeB 1.2s cubic-bezier(.65,0,.35,1) 8.2s both, closeB 1.2s cubic-bezier(.7,0,.3,1) 13.4s forwards, hideLate .1s linear 17.3s forwards; }
+.scene--intro.is-on .beatB { animation: wipeB 1.2s cubic-bezier(.65,0,.35,1) 11.2s both, closeB 1.2s cubic-bezier(.7,0,.3,1) 16.4s forwards, hideLate .1s linear 20.3s forwards; }
 @keyframes wipeB { from { --t: -70%; } to { --t: 105%; } }
 /* Closing: the purple side swallows the video (edge sweeps left), the title straightens and settles in the middle. */
 @keyframes closeB { from { --r: 40%; } to { --r: -60%; } }
@@ -772,7 +774,7 @@ th { background: var(--river); color: var(--white); }
 .edge--b { position: absolute; inset: 0; background: var(--gold); clip-path: polygon(var(--r) 0, calc(var(--r) + 9px) 0, calc(var(--r) + 55% + 9px) 100%, calc(var(--r) + 55%) 100%); }
 .intro__lead--c { opacity: 1; }
 .lead-c { opacity: 0; }
-.scene--intro.is-on .lead-c { animation: cIn 1s cubic-bezier(.16,1,.3,1) 9s both, toNormalC 1.3s cubic-bezier(.7,0,.2,1) 13.4s forwards, hideLate .3s linear 15s forwards; }
+.scene--intro.is-on .lead-c { animation: cIn 1s cubic-bezier(.16,1,.3,1) 12s both, toNormalC 1.3s cubic-bezier(.7,0,.2,1) 16.4s forwards, hideLate .3s linear 18s forwards; }
 @keyframes toNormalC { to { transform: translate(var(--cnx, 0px), var(--cny, 0px)) rotate(0rad) scale(var(--cns, 1)); } }
 @keyframes cIn {
   from { opacity: 0; transform: translate(calc(var(--bx, 0px) - 40px), var(--by, 0px)) rotate(var(--rotb, 0)) scale(var(--bs, 1)); }
@@ -780,7 +782,7 @@ th { background: var(--river); color: var(--white); }
 }
 .sub--b { opacity: 1; }
 .sub--b span { opacity: 0; }
-.scene--intro.is-on .sub--b span { animation: subB .9s cubic-bezier(.16,1,.3,1) 9.4s both, subBNormal 1.3s cubic-bezier(.7,0,.2,1) 13.4s forwards, hideLate .3s linear 15s forwards; }
+.scene--intro.is-on .sub--b span { animation: subB .9s cubic-bezier(.16,1,.3,1) 12.4s both, subBNormal 1.3s cubic-bezier(.7,0,.2,1) 16.4s forwards, hideLate .3s linear 18s forwards; }
 @keyframes subBNormal { to { transform: translate(var(--sbnx, 0px), var(--sbny, 0px)) rotate(0rad); } }
 @keyframes subB {
   from { opacity: 0; transform: translate(calc(var(--sbx, 0px) - 24px), var(--sby, 0px)) rotate(var(--rotb, 0)); }
@@ -789,7 +791,7 @@ th { background: var(--river); color: var(--white); }
 
 /* Beat C: gold shows through the letters of HIGH SCHOOL, then a letter zooms open into the gold words scene. */
 .beatC { position: absolute; inset: 0; opacity: 0; overflow: hidden; }
-.scene--intro.is-on .beatC { animation: fadeIn .4s ease 14.7s both; }
+.scene--intro.is-on .beatC { animation: fadeIn .4s ease 17.7s both; }
 .cwin { position: absolute; inset: 0; background: var(--gold); }
 @keyframes fadeIn { to { opacity: 1; } }
 
@@ -917,7 +919,7 @@ th { background: var(--river); color: var(--white); }
 @media (max-width: 700px) {
   .slat--a { clip-path: polygon(0 calc(100% - var(--m)), 100% calc(100% - var(--m)), 100% 100%, 0 100%); }
   .edge--a, .edge--b { display: none; }
-  .scene--intro.is-on .dgA { animation: dgAm 4s linear 3.6s both, hideLate .1s linear 9.4s forwards; }
+  .scene--intro.is-on .dgA { animation: dgAm 4s linear 6.6s both, hideLate .1s linear 12.4s forwards; }
   @keyframes dgAm {
     0% { --m: 0%; animation-timing-function: cubic-bezier(.16,1,.3,1); }
     27.5% { --m: 50%; }
@@ -927,7 +929,7 @@ th { background: var(--river); color: var(--white); }
   .cam, .slat--b .cam { top: 50%; left: 0; right: 0; -webkit-mask-image: none; mask-image: none; }
   .beatB { --m: 50%; }
   .slat--b { clip-path: polygon(0 calc(100% - var(--m)), 100% calc(100% - var(--m)), 100% 100%, 0 100%); }
-  .scene--intro.is-on .beatB { animation: wipeB 1.2s cubic-bezier(.65,0,.35,1) 8.2s both, closeBm 1.2s cubic-bezier(.7,0,.3,1) 13.4s forwards, hideLate .1s linear 17.3s forwards; }
+  .scene--intro.is-on .beatB { animation: wipeB 1.2s cubic-bezier(.65,0,.35,1) 11.2s both, closeBm 1.2s cubic-bezier(.7,0,.3,1) 16.4s forwards, hideLate .1s linear 20.3s forwards; }
   @keyframes closeBm { from { --m: 50%; } to { --m: 0%; } }
 }
 

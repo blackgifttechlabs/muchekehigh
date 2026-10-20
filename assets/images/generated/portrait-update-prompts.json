@@ -1,0 +1,12 @@
+{
+  "tool": "built-in image_gen",
+  "form4": "Photorealistic Zimbabwean teenage schoolgirl in navy school sweater, white shirt and striped tie, holding exercise books, centered mid-thigh portrait, transparent background.",
+  "forms5and6": "Extract the main foreground student, remove background and other people, preserve identity, expression, uniform and pose, crop above head to below waist, transparent background.",
+  "sources": {
+    "1": "Polished Navy School Portrait.png",
+    "2": "Student in Navy School Uniform.png",
+    "5": "Young Student in a Lush Campus Garden.png",
+    "6": "Macoser High School Portrait.png",
+    "3": "School Portrait with Youth Bible.png"
+  }
+}
