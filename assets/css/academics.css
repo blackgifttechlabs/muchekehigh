@@ -26,15 +26,14 @@
 }
 .acad-hero h1 strong { font-weight: 700; }
 .acad-lead { max-width: 34rem; margin: 1.8rem 0 0; font-size: 1.18rem; line-height: 1.6; color: var(--ink); }
-.acad-hero__art { position: relative; display: flex; align-items: flex-end; justify-content: center; min-height: 30rem; }
+.acad-hero__art { position: relative; isolation: isolate; display: flex; align-items: flex-end; justify-content: center; min-height: 30rem; }
 .acad-hero__blob {
   position: absolute; left: 50%; bottom: -12%; width: 92%; aspect-ratio: 1; translate: -50% 0;
-  border-radius: 50%; background: var(--gold-soft);
+  border-radius: 50%; background: var(--gold-soft); z-index: -1;
 }
 .acad-figure { position: relative; margin: 0 -2.2vw; flex: 0 1 auto; width: clamp(150px, 19vw, 320px); }
-.acad-figure img { display: block; width: 100%; height: auto; mix-blend-mode: multiply; }   /* white photo background disappears into the shape behind */
-/* no z-index here on purpose: a stacking context would stop the multiply blend reaching the shape behind.
-   Paint order = DOM order (a, c, b), screen order = flex order (a, b, c). */
+.acad-figure img { display: block; width: 100%; height: auto; mix-blend-mode: normal; filter: none; }   /* Transparent cutouts retain their original colours. */
+/* The circle stays behind the transparent student portraits. */
 .acad-figure--a { order: 1; width: clamp(130px, 16.5vw, 280px); }
 .acad-figure--b { order: 2; }
 .acad-figure--c { order: 3; width: clamp(130px, 16.5vw, 280px); }

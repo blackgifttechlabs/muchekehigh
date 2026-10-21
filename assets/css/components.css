@@ -35,6 +35,32 @@
 .school-showcase__track { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: clamp(12px, 1.5vw, 24px); }
 .school-showcase__card { min-width: 0; display: flex; flex-direction: column; padding: 12px; border: 1px solid #E8ECEB; border-radius: 0; background: #fff; }
 .school-showcase__card img { display: block; width: 100%; height: auto; aspect-ratio: 3 / 4; object-fit: contain; background: #fff; border-radius: 0; margin-bottom: 16px; }
+.school-showcase__card {
+  position: relative;
+  overflow: visible;
+  transform-origin: center bottom;
+  transition: transform .35s ease, box-shadow .35s ease;
+}
+.school-showcase__card img {
+  transform-origin: center bottom;
+  transition: transform .45s cubic-bezier(.2,.8,.2,1);
+}
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .school-showcase__card:hover {
+    z-index: 2;
+    transform: translateY(-10px) scale(1.025);
+    box-shadow: 0 18px 36px rgba(0,50,60,.13);
+  }
+  .school-showcase__card:hover img { transform: translateY(-14px) scale(1.13); }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .school-showcase__card:focus-within {
+    z-index: 2;
+    transform: translateY(-10px) scale(1.025);
+    box-shadow: 0 18px 36px rgba(0,50,60,.13);
+  }
+  .school-showcase__card:focus-within img { transform: translateY(-14px) scale(1.13); }
+}
 .school-showcase__card h2 { font-family: var(--font-body); font-size: clamp(1rem, 1.5vw, 1.4rem); margin: 0 0 12px; }
 .school-showcase__card a { margin-top: auto; font-size: .85rem; line-height: 1.4; color: var(--river-deep); text-decoration: none; }
 .school-showcase__card a:hover { text-decoration: underline; }
@@ -661,18 +687,30 @@ th { background: var(--river); color: var(--white); }
 
 /* 1 · intro: WELCOME splits, a growing navy square, MUCHEKE HIGH, then two diagonal video "slats" */
 @property --sq { syntax: "<length>"; inherits: true; initial-value: 0px; }
-@property --l { syntax: "<percentage>"; inherits: true; initial-value: 170%; }
-@property --t { syntax: "<percentage>"; inherits: true; initial-value: -70%; }
-@property --r { syntax: "<percentage>"; inherits: true; initial-value: 40%; }
+@property --l { syntax: "<percentage>"; inherits: true; initial-value: 210%; }
+@property --t { syntax: "<percentage>"; inherits: true; initial-value: -110%; }
+@property --r { syntax: "<percentage>"; inherits: true; initial-value: 0%; }
 @property --m { syntax: "<percentage>"; inherits: true; initial-value: 0%; }
 .scene--intro {
-  background: linear-gradient(rgba(0, 40, 48, .45), rgba(0, 40, 48, .45)), url("../images/sunlit-symmetrical-campus-courtyard.webp") center / cover no-repeat;
   padding: 0; --x0: 0px;
+}
+.scene--intro::before {
+  content: "";
+  position: absolute;
+  top: 0; bottom: 0; left: 50%;
+  /* The walkway is at 43.4% of the photo. Keep that point at screen center.
+     Extra width covers the edges even on wide desktop screens. */
+  width: 116%;
+  min-width: 216vh;
+  min-width: 216svh;
+  transform: translateX(-43.4%);
+  background: linear-gradient(rgba(0, 40, 48, .45), rgba(0, 40, 48, .45)), url("../images/sunlit-symmetrical-campus-courtyard.webp") center / cover no-repeat;
+  pointer-events: none;
 }
 .scene--intro .welcome--dark { color: var(--white); text-shadow: 0 2px 18px rgba(0, 0, 0, .35); }
 /* One variable (--sq = half-side of the square) drives both the square and the two text halves,
    so the gap between each half and the square is always identical. */
-.scene--intro.is-on { animation: squareGrow 1.1s cubic-bezier(.65,0,.35,1) 3.95s both; }
+.scene--intro.is-on { animation: squareGrow 2s cubic-bezier(.65,0,.35,1) 1.42s both; }
 @keyframes squareGrow { from { --sq: 0px; } to { --sq: 60vmax; } }
 .welcome {
   position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
@@ -681,10 +719,13 @@ th { background: var(--river); color: var(--white); }
   font: 700 clamp(3rem, 13vw, 10.5rem)/1 var(--font-body); letter-spacing: -.04em;
 }
 .welcome--light { color: var(--white); }
-.scene--intro.is-on .welcome { animation: welcomeIn .7s cubic-bezier(.16,1,.3,1) both; }
+.scene--intro.is-on .welcome__letter {
+  animation: welcomeIn .7s cubic-bezier(.16,1,.3,1) both;
+  animation-delay: calc(var(--letter) * .12s);
+}
 @keyframes welcomeIn {
-  from { transform: scale(3.4); opacity: 0; filter: blur(14px); letter-spacing: .1em; }
-  to { transform: none; opacity: 1; filter: blur(0); letter-spacing: -.04em; }
+  from { transform: translateY(-.65em) scale(3.4); opacity: 0; filter: blur(14px); }
+  to { transform: none; opacity: 1; filter: blur(0); }
 }
 .welcome span { display: inline-block; }
 .w-l { transform: translateX(calc(-1 * (var(--sq) + min(var(--sq), 1rem)))); }
@@ -706,53 +747,177 @@ th { background: var(--river); color: var(--white); }
   padding-bottom: 5.5rem; white-space: nowrap; color: var(--white); opacity: 0; pointer-events: none;
   font: 700 clamp(2.4rem, 8.5vw, 7rem)/1 var(--font-body); letter-spacing: -.03em;
 }
+.intro__chemistry {
+  position: absolute; inset: 0; opacity: 0;
+  background: linear-gradient(rgba(0, 40, 48, .4), rgba(0, 40, 48, .4)), url("../images/interactive-chemistry-lesson-laboratory.webp") center / cover no-repeat;
+}
+.scene--intro.is-on .intro__chemistry {
+  animation: chemistryGrow 2s cubic-bezier(.65,0,.35,1) 1.42s both,
+    chemistryFadeOut .7s ease 5.07s forwards;
+}
+@keyframes chemistryGrow {
+  from { opacity: 0; transform: scale(.35); }
+  to { opacity: 1; transform: scale(1); }
+}
+@keyframes chemistryFadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
 .intro__lead--school { font-size: clamp(2.6rem, 10.5vw, 9rem); letter-spacing: -.04em; }
-.scene--intro.is-on .intro__lead--to { animation: leadFade 1s ease 4.45s both; }
-.scene--intro.is-on .intro__lead--school { animation: leadIn .6s ease 5.45s both, hideLate .1s linear 12.4s forwards; }
+.intro__lead--to {
+  left: var(--x0);
+  right: calc(-1 * var(--x0));
+  padding: 0;
+  clip-path: none;
+}
+.scene--intro.is-on .intro__lead--to {
+  animation: toGrow 2s cubic-bezier(.65,0,.35,1) 1.42s both,
+    toDust .55s linear 3.42s forwards;
+}
+@keyframes toGrow {
+  from { opacity: 1; transform: scale(0); }
+  to { opacity: 1; transform: scale(1); }
+}
+.scene--intro.is-on .intro__lead--school { animation: schoolFromDust 1.1s ease 3.7s both, hideLate .1s linear 10.77s forwards; }
+.intro__dust { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 3; pointer-events: none; }
+@property --dust-cut { syntax: "<percentage>"; inherits: false; initial-value: 0%; }
+.intro__lead--to {
+  mask-image: linear-gradient(90deg, transparent calc(var(--dust-cut) - 1%), #000 var(--dust-cut));
+}
+@keyframes toDust {
+  from { opacity: 1; --dust-cut: var(--dust-start, 0%); }
+  99% { opacity: 1; }
+  to { opacity: 0; --dust-cut: var(--dust-end, 100%); }
+}
+@keyframes schoolFromDust {
+  from { opacity: 0; filter: blur(12px); mask-size: 0% 100%; }
+  55% { opacity: .75; filter: blur(3px); }
+  to { opacity: 1; filter: blur(0); mask-size: 100% 100%; }
+}
+.intro__lead--school { mask-image: linear-gradient(#000, #000); mask-repeat: no-repeat; mask-position: center; }
 @keyframes hideLate { to { opacity: 0; } }
 @keyframes leadIn { from { opacity: 0; transform: scale(.85); filter: blur(10px); } to { opacity: 1; transform: none; filter: blur(0); } }
 @keyframes leadFade {
-  0% { opacity: 0; transform: scale(.75); filter: blur(10px); }
-  28% { opacity: 1; transform: none; filter: blur(0); }
-  72% { opacity: 1; transform: none; filter: blur(0); }
+  0% { opacity: 1; transform: none; filter: blur(0); }
   100% { opacity: 0; transform: scale(1.08); filter: blur(6px); }
 }
 .lead-a, .lead-b, .lead-c, .sub span { display: inline-block; }
 /* HIGH drops away, MUCHEKE tilts onto the diagonal... */
-.scene--intro.is-on .lead-b { animation: highOut .5s ease 6.6s both; }
+.scene--intro.is-on .lead-b { animation: highOut .5s ease 4.97s both; }
 @keyframes highOut { to { opacity: 0; transform: translateY(40%) scale(.8); filter: blur(8px); } }
 /* ...and when the slat closes it straightens out and settles in the middle. */
-.scene--intro.is-on .lead-a { animation: toDiag 1s cubic-bezier(.16,1,.3,1) 6.7s both, toNormal 1.3s cubic-bezier(.7,0,.2,1) 9.3s forwards; }
+.scene--intro.is-on .lead-a { animation: toDiag 1s cubic-bezier(.16,1,.3,1) 5.07s both, toNormal 1.3s cubic-bezier(.7,0,.2,1) 7.67s forwards; }
 @keyframes toDiag { to { transform: translate(var(--ax, 0), var(--ay, 0)) rotate(var(--rot, 0)) scale(var(--as, 1)); } }
 @keyframes toNormal { to { transform: translate(var(--nx, 0), var(--ny, 0)) rotate(0rad) scale(var(--ns, 1)); } }
 
 /* Small gold captions that travel with each big word. */
 .sub { font-size: clamp(.8rem, 1.5vw, 1.25rem); letter-spacing: .38em; color: var(--gold); text-transform: uppercase; }
-.sub--a { opacity: 1; }
+.sub--a {
+  opacity: 1;
+  top: var(--government-top, 60%); bottom: auto;
+  padding: 0 16px;
+  clip-path: none;
+  letter-spacing: clamp(.12em, .4vw, .3em);
+  font-size: clamp(.65rem, 1.25vw, 1.1rem);
+}
 .sub--a span { opacity: 0; }
-.scene--intro.is-on .sub--a span { animation: subA .9s cubic-bezier(.16,1,.3,1) 7.5s both, subANormal 1.3s cubic-bezier(.7,0,.2,1) 9.3s forwards, hideLate .1s linear 12.4s forwards; }
+.scene--intro.is-on .sub--a span { animation: subANormal 1.3s ease 7.67s forwards, hideLate .1s linear 10.77s forwards; }
 @keyframes subA {
   from { opacity: 0; transform: translate(var(--sax, 0), var(--say, 0)) rotate(var(--rot, 0)) translateX(-24px); }
   to { opacity: 1; transform: translate(var(--sax, 0), var(--say, 0)) rotate(var(--rot, 0)); }
 }
-@keyframes subANormal { to { transform: translate(var(--snx, 0), var(--sny, 0)) rotate(0rad); } }
+.sub--a .has-government-crest {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(16px, 2.5svh, 24px);
+}
+.government-seal {
+  position: relative;
+  height: clamp(70px, 11svh, 106px);
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  perspective: 600px;
+}
+.government-crest {
+  height: 90%;
+  width: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 6px 12px rgba(0,0,0,.3));
+  animation: governmentCrestReveal 1.2s cubic-bezier(.16,1,.3,1) .3s both;
+}
+.government-seal__orbit {
+  position: absolute;
+  inset: -12%;
+  width: 124%; height: 124%;
+  overflow: visible;
+  transform: rotate(-90deg);
+  pointer-events: none;
+}
+.government-seal__orbit circle {
+  fill: none; stroke: var(--gold); stroke-width: 1;
+  stroke-dasharray: 1; stroke-dashoffset: 1;
+  animation: governmentOrbit 1.8s cubic-bezier(.65,0,.35,1) .1s both;
+}
+.government-title {
+  display: inline-flex;
+  font-weight: inherit;
+  perspective: 500px;
+  margin-right: calc(-1 * clamp(.12em, .4vw, .3em));
+}
+.government-title i {
+  transform-origin: 50% 100%;
+  animation: governmentLetter .65s cubic-bezier(.16,1,.3,1) both;
+  animation-delay: calc(.65s + var(--letter) * .035s);
+}
+.government-rule {
+  position: absolute;
+  top: calc(100% + 15px); left: 25%;
+  width: 50%; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  animation: governmentRule .8s cubic-bezier(.16,1,.3,1) 1.25s both;
+}
+@keyframes governmentCrestReveal {
+  from { opacity: 0; clip-path: inset(100% 0 0); transform: translateY(22px) rotateY(-55deg) scale(.65); }
+  65% { opacity: 1; clip-path: inset(0); }
+  to { opacity: 1; clip-path: inset(0); transform: translateY(0) rotateY(0) scale(1); }
+}
+@keyframes governmentOrbit {
+  0% { stroke-dashoffset: 1; opacity: 0; }
+  20% { opacity: .8; }
+  75% { stroke-dashoffset: 0; opacity: .65; }
+  100% { stroke-dashoffset: -.1; opacity: .2; }
+}
+@keyframes governmentLetter {
+  from { opacity: 0; transform: translateY(18px) rotateX(-85deg); filter: blur(5px); }
+  to { opacity: 1; transform: none; filter: blur(0); }
+}
+@keyframes governmentRule {
+  from { opacity: 0; transform: scaleX(0); }
+  to { opacity: 1; transform: scaleX(1); }
+}
+@keyframes subANormal {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: none; }
+}
 
-/* Slat A: slanted video panel. --l is the position of its left (diagonal) edge: sweeps in to 65%, later sweeps
-   right to 170% which covers the video with navy again. The gold edge rides the same variable. */
-.dgA { position: absolute; inset: 0; --l: 170%; }
-.scene--intro.is-on .dgA { animation: dgA 4s linear 6.6s both, hideLate .1s linear 12.4s forwards; }
+/* The resting diagonal connects the top-right and bottom-left corners. */
+.dgA { position: absolute; inset: 0; --l: 210%; }
+.scene--intro.is-on .dgA { animation: dgA 4s linear 4.97s both, hideLate .1s linear 10.77s forwards; }
 @keyframes dgA {
-  0% { --l: 170%; animation-timing-function: cubic-bezier(.16,1,.3,1); }
-  27.5% { --l: 65%; }
-  67.5% { --l: 65%; animation-timing-function: cubic-bezier(.7,0,.3,1); }
-  100% { --l: 170%; }
+  0% { --l: 210%; animation-timing-function: cubic-bezier(.16,1,.3,1); }
+  27.5% { --l: 100%; }
+  67.5% { --l: 100%; animation-timing-function: cubic-bezier(.7,0,.3,1); }
+  100% { --l: 210%; }
 }
 .slat { position: absolute; inset: 0; overflow: hidden; }
-.slat--a { background: var(--river-deep); clip-path: polygon(var(--l) 0, 100% 0, 100% 100%, calc(var(--l) - 55%) 100%); }
-.edge--a { position: absolute; inset: 0; background: var(--gold); clip-path: polygon(var(--l) 0, calc(var(--l) + 9px) 0, calc(var(--l) - 55% + 9px) 100%, calc(var(--l) - 55%) 100%); }
+.slat--a { background: var(--river-deep); clip-path: polygon(var(--l) 0, 100% 0, 100% 100%, calc(var(--l) - 100%) 100%); }
+.edge--a { position: absolute; inset: 0; background: var(--gold); clip-path: polygon(var(--l) 0, calc(var(--l) + 9px) 0, calc(var(--l) - 100% + 9px) 100%, calc(var(--l) - 100%) 100%); }
 .slat::after { content: ""; position: absolute; inset: 0; background: rgba(6, 20, 28, .55); }
 /* The footage sits right of the navy triangle so both students stay in view, with a slow camera drift. */
-.cam { position: absolute; top: 0; bottom: 0; left: 38%; right: 0; -webkit-mask-image: linear-gradient(to right, transparent, #000 18%); mask-image: linear-gradient(to right, transparent, #000 18%); animation: camMove 8s ease-in-out infinite alternate; }
+.cam { position: absolute; top: 0; bottom: 0; left: 0; right: 0; -webkit-mask-image: linear-gradient(to right, transparent, #000 18%); mask-image: linear-gradient(to right, transparent, #000 18%); animation: camMove 8s ease-in-out infinite alternate; }
 .slat video { width: 100%; height: 100%; object-fit: cover; display: block; transform: scaleX(-1) scale(1.13); }
 @keyframes camMove {
   0% { transform: scale(1) translateX(0) rotate(0deg); transform-origin: 20% 60%; }
@@ -760,21 +925,20 @@ th { background: var(--river); color: var(--white); }
   100% { transform: scale(1.2) translateX(-2%) rotate(.6deg); transform-origin: 70% 55%; }
 }
 
-/* Beat B: a purple stage wipes in from the left (slanted front), girls on the left, text on the right,
-   so the diagonal now leans the other way. */
-.beatB { position: absolute; inset: 0; background: #3b2380; --t: -70%; opacity: 1; clip-path: polygon(0 0, var(--t) 0, calc(var(--t) + 55%) 100%, 0 100%); }
-.scene--intro.is-on .beatB { animation: wipeB 1.2s cubic-bezier(.65,0,.35,1) 11.2s both, closeB 1.2s cubic-bezier(.7,0,.3,1) 16.4s forwards, hideLate .1s linear 20.3s forwards; }
-@keyframes wipeB { from { --t: -70%; } to { --t: 105%; } }
+/* Beat B keeps the top-right to bottom-left diagonal, with footage on the left. */
+.beatB { position: absolute; inset: 0; background: #3b2380; --t: -110%; opacity: 1; clip-path: polygon(0 0, calc(var(--t) + 100%) 0, var(--t) 100%, 0 100%); }
+.scene--intro.is-on .beatB { animation: wipeB 1.2s cubic-bezier(.65,0,.35,1) 9.57s both, closeB 1.2s cubic-bezier(.7,0,.3,1) 14.77s forwards, hideLate .1s linear 18.67s forwards; }
+@keyframes wipeB { from { --t: -110%; } to { --t: 105%; } }
 /* Closing: the purple side swallows the video (edge sweeps left), the title straightens and settles in the middle. */
-@keyframes closeB { from { --r: 40%; } to { --r: -60%; } }
-.slat--b { background: #3b2380; clip-path: polygon(0 0, var(--r) 0, calc(var(--r) + 55%) 100%, 0 100%); }
+@keyframes closeB { from { --r: 0%; } to { --r: -110%; } }
+.slat--b { background: #3b2380; clip-path: polygon(0 0, calc(var(--r) + 100%) 0, var(--r) 100%, 0 100%); }
 .slat--b::after { background: rgba(20, 8, 50, .4); }
-.slat--b .cam { left: 0; right: 48%; -webkit-mask-image: linear-gradient(to left, transparent, #000 12%); mask-image: linear-gradient(to left, transparent, #000 12%); animation-delay: -3s; }
+.slat--b .cam { left: 0; right: 0; -webkit-mask-image: linear-gradient(to left, transparent, #000 12%); mask-image: linear-gradient(to left, transparent, #000 12%); animation-delay: -3s; }
 .slat--b video { transform: none; object-position: center 10%; }
-.edge--b { position: absolute; inset: 0; background: var(--gold); clip-path: polygon(var(--r) 0, calc(var(--r) + 9px) 0, calc(var(--r) + 55% + 9px) 100%, calc(var(--r) + 55%) 100%); }
+.edge--b { position: absolute; inset: 0; background: var(--gold); clip-path: polygon(calc(var(--r) + 100%) 0, calc(var(--r) + 100% + 9px) 0, calc(var(--r) + 9px) 100%, var(--r) 100%); }
 .intro__lead--c { opacity: 1; }
 .lead-c { opacity: 0; }
-.scene--intro.is-on .lead-c { animation: cIn 1s cubic-bezier(.16,1,.3,1) 12s both, toNormalC 1.3s cubic-bezier(.7,0,.2,1) 16.4s forwards, hideLate .3s linear 18s forwards; }
+.scene--intro.is-on .lead-c { animation: cIn 1s cubic-bezier(.16,1,.3,1) 10.37s both, toNormalC 1.3s cubic-bezier(.7,0,.2,1) 14.77s forwards, hideLate .3s linear 16.37s forwards; }
 @keyframes toNormalC { to { transform: translate(var(--cnx, 0px), var(--cny, 0px)) rotate(0rad) scale(var(--cns, 1)); } }
 @keyframes cIn {
   from { opacity: 0; transform: translate(calc(var(--bx, 0px) - 40px), var(--by, 0px)) rotate(var(--rotb, 0)) scale(var(--bs, 1)); }
@@ -782,7 +946,7 @@ th { background: var(--river); color: var(--white); }
 }
 .sub--b { opacity: 1; }
 .sub--b span { opacity: 0; }
-.scene--intro.is-on .sub--b span { animation: subB .9s cubic-bezier(.16,1,.3,1) 12.4s both, subBNormal 1.3s cubic-bezier(.7,0,.2,1) 16.4s forwards, hideLate .3s linear 18s forwards; }
+.scene--intro.is-on .sub--b span { animation: subB .9s cubic-bezier(.16,1,.3,1) 10.77s both, subBNormal 1.3s cubic-bezier(.7,0,.2,1) 14.77s forwards, hideLate .3s linear 16.37s forwards; }
 @keyframes subBNormal { to { transform: translate(var(--sbnx, 0px), var(--sbny, 0px)) rotate(0rad); } }
 @keyframes subB {
   from { opacity: 0; transform: translate(calc(var(--sbx, 0px) - 24px), var(--sby, 0px)) rotate(var(--rotb, 0)); }
@@ -791,7 +955,7 @@ th { background: var(--river); color: var(--white); }
 
 /* Beat C: gold shows through the letters of HIGH SCHOOL, then a letter zooms open into the gold words scene. */
 .beatC { position: absolute; inset: 0; opacity: 0; overflow: hidden; }
-.scene--intro.is-on .beatC { animation: fadeIn .4s ease 17.7s both; }
+.scene--intro.is-on .beatC { animation: fadeIn .4s ease 16.07s both; }
 .cwin { position: absolute; inset: 0; background: var(--gold); }
 @keyframes fadeIn { to { opacity: 1; } }
 
@@ -826,6 +990,11 @@ th { background: var(--river); color: var(--white); }
 /* 3 · photo circles orbiting the label */
 @property --a { syntax: "<angle>"; inherits: true; initial-value: 0deg; }
 .scene--cards { background: radial-gradient(ellipse at 50% 0%, #2d6f87 0%, var(--river) 45%, var(--river-deep) 100%); }
+.science-classroom-scene {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: center;
+}
 .orbit {
   --R: min(25vh, 24vw);            /* orbit radius */
   --D: min(17vh, 20vw);            /* circle diameter */
@@ -919,7 +1088,7 @@ th { background: var(--river); color: var(--white); }
 @media (max-width: 700px) {
   .slat--a { clip-path: polygon(0 calc(100% - var(--m)), 100% calc(100% - var(--m)), 100% 100%, 0 100%); }
   .edge--a, .edge--b { display: none; }
-  .scene--intro.is-on .dgA { animation: dgAm 4s linear 6.6s both, hideLate .1s linear 12.4s forwards; }
+  .scene--intro.is-on .dgA { animation: dgAm 4s linear 4.97s both, hideLate .1s linear 10.77s forwards; }
   @keyframes dgAm {
     0% { --m: 0%; animation-timing-function: cubic-bezier(.16,1,.3,1); }
     27.5% { --m: 50%; }
@@ -929,7 +1098,7 @@ th { background: var(--river); color: var(--white); }
   .cam, .slat--b .cam { top: 50%; left: 0; right: 0; -webkit-mask-image: none; mask-image: none; }
   .beatB { --m: 50%; }
   .slat--b { clip-path: polygon(0 calc(100% - var(--m)), 100% calc(100% - var(--m)), 100% 100%, 0 100%); }
-  .scene--intro.is-on .beatB { animation: wipeB 1.2s cubic-bezier(.65,0,.35,1) 11.2s both, closeBm 1.2s cubic-bezier(.7,0,.3,1) 16.4s forwards, hideLate .1s linear 20.3s forwards; }
+  .scene--intro.is-on .beatB { animation: wipeB 1.2s cubic-bezier(.65,0,.35,1) 9.57s both, closeBm 1.2s cubic-bezier(.7,0,.3,1) 14.77s forwards, hideLate .1s linear 18.67s forwards; }
   @keyframes closeBm { from { --m: 50%; } to { --m: 0%; } }
 }
 
@@ -941,10 +1110,9 @@ th { background: var(--river); color: var(--white); }
 }
 .why__sub { margin: .5rem auto 0; max-width: none; text-transform: uppercase; color: var(--ink); font-size: 1rem; }
 .why__stage { position: relative; margin-top: clamp(2.5rem, 6vw, 4.5rem); min-height: 15rem; }
-.why__slides { display: grid; max-width: 64rem; margin-inline: auto; padding-inline: clamp(2.8rem, 6vw, 4rem); }
+.why__slides { display: grid; max-width: 64rem; margin-inline: auto; padding-inline: clamp(2.8rem, 6vw, 4rem); overflow: hidden; }
 .why__slide {
-  grid-area: 1 / 1; margin: 0; opacity: 0; visibility: hidden; transform: translateY(10px);
-  transition: opacity .6s ease, transform .6s ease, visibility 0s linear .6s;
+  grid-area: 1 / 1; margin: 0; opacity: 0; visibility: hidden; transform: none;
 }
 .why__slide.is-active { opacity: 1; visibility: visible; transform: none; transition-delay: 0s; }
 .why__slide h3 { margin: 0 0 .6rem; font: 700 1.2rem/1.3 var(--font-body); color: var(--ink); }
@@ -961,6 +1129,74 @@ th { background: var(--river); color: var(--white); }
 .why__arrow--prev { left: 0; }
 .why__arrow--next { right: 0; }
 
+/* Horizontal video stages: a compact title band leaves the footage most of the hero. */
+.scene--intro .slat--a, .scene--intro .slat--b {
+  clip-path: inset(calc(100% - var(--m)) 0 0);
+}
+.scene--intro .cam, .scene--intro .slat--b .cam {
+  top: calc(100% - var(--m) + 3px); left: 0; right: 0;
+  -webkit-mask-image: none; mask-image: none;
+  animation: none;
+}
+.scene--intro .slat video { object-position: center top; transform: scaleX(-1); }
+.scene--intro .slat--b video { transform: none; }
+.scene--intro .slat::after { background: rgba(6,20,28,.18); }
+.scene--intro .edge--a, .scene--intro .edge--b {
+  display: block; inset: auto 0 auto;
+  top: calc(100% - var(--m)); height: 3px;
+  clip-path: none;
+}
+.scene--intro.is-on .dgA {
+  --m: 0%;
+  animation: horizontalVideoA 4s linear 4.97s both, hideLate .1s linear 10.77s forwards;
+}
+.scene--intro .beatB { clip-path: none; --m: 0%; opacity: 0; }
+.scene--intro.is-on .beatB {
+  animation: horizontalVideoB 6.4s linear 9.57s both, hideLate .1s linear 18.67s forwards;
+}
+@keyframes horizontalVideoA {
+  0% { --m: 0%; animation-timing-function: cubic-bezier(.16,1,.3,1); }
+  27.5%, 67.5% { --m: var(--video-height, 70%); }
+  100% { --m: 0%; }
+}
+@keyframes horizontalVideoB {
+  0% { opacity: 0; --m: 0%; }
+  8% { opacity: 1; }
+  18.75%, 81.25% { opacity: 1; --m: var(--video-height, 70%); }
+  100% { opacity: 1; --m: 0%; }
+}
+
+/* Classroom footage enters in a square frame and preserves the complete video. */
+.scene--intro .slat--b {
+  inset: auto;
+  top: var(--video-top, 30%);
+  left: 50%;
+  width: min(calc(100% - 32px), calc(100svh - var(--video-top, 30svh) - 24px));
+  aspect-ratio: 1;
+  clip-path: none;
+  border: 1px solid rgba(255,255,255,.25);
+  background: #29134a;
+  transform: translateX(-50%);
+}
+.scene--intro .slat--b .cam { inset: 0; }
+.scene--intro .slat--b video {
+  object-fit: contain;
+  object-position: center;
+}
+.scene--intro .slat--b::after, .scene--intro .edge--b { display: none; }
+.scene--intro.is-on .slat--b {
+  animation: classroomEnter 1.2s cubic-bezier(.16,1,.3,1) 9.57s both,
+    classroomExit 1.2s cubic-bezier(.7,0,.3,1) 14.77s forwards;
+}
+@keyframes classroomEnter {
+  from { opacity: 0; transform: translateX(calc(50vw + 32px)); }
+  to { opacity: 1; transform: translateX(-50%); }
+}
+@keyframes classroomExit {
+  from { opacity: 1; transform: translateX(-50%); }
+  to { opacity: 0; transform: translateX(calc(50vw + 32px)); }
+}
+
 /* The tour's bottom edge is the road for the school bus. */
 .school-photo { --bus-width: min(680px, 82vw); --bus-progress: 0; }
 .school-photo.is-driving { animation: admissionsDrive 9s linear both; }
@@ -971,3 +1207,277 @@ th { background: var(--river); color: var(--white); }
   .school-photo, .school-photo.is-driving { --bus-progress: 1; animation: none; }
   .school-photo.is-driving .bus-reveal__wheel { animation: none; }
 }
+
+/* The classroom card opens into a book, then grows the student tree. */
+.scene--intro .beatB { perspective: 1200px; }
+.scene--intro.is-on .beatB {
+  animation: fadeIn .6s ease 9.57s both;
+}
+.scene--intro .slat--b {
+  left: 72%;
+  top: calc(var(--hero-clearance) + 16px);
+  width: min(43vw, calc(100svh - var(--hero-clearance) - 50px));
+  overflow: visible;
+  transform-style: preserve-3d;
+  border-radius: 14px;
+  border: 1px solid #b9fff3;
+  box-shadow: 0 0 8px #8cffe8, 0 0 26px #56eacb88, 0 0 65px #64e8f32b;
+}
+.scene--intro .slat--b .cam {
+  border-radius: inherit;
+  overflow: hidden;
+  backface-visibility: hidden;
+}
+.scene--intro .slat--b::before {
+  content: '';
+  position: absolute; inset: -4px;
+  border: 2px solid transparent;
+  border-top-color: #fff; border-right-color: #82ffee;
+  border-radius: 17px;
+  filter: drop-shadow(0 0 7px #8cffe8);
+  animation: neonOrbit 3s linear infinite;
+  pointer-events: none;
+}
+.scene--intro .slat--b::after {
+  content: '';
+  display: block;
+  position: absolute; inset: 0;
+  border-radius: inherit;
+  background: url('../images/mucheke-crest-navy-hd.png') center / auto 72% no-repeat, radial-gradient(circle, #215c60, #082c32);
+  backface-visibility: hidden;
+  transform: rotateY(180deg);
+}
+.scene--intro.is-on .slat--b {
+  animation: classroomEnter 1.2s cubic-bezier(.16,1,.3,1) 9.57s both,
+    classroomToBook .35s ease 14.77s forwards;
+}
+.scene--intro.is-on .lead-c {
+  animation: cIn 1s cubic-bezier(.16,1,.3,1) 10.37s both,
+    hideLate .5s ease 14.77s forwards;
+}
+.scene--intro.is-on .sub--b span {
+  animation: subB .9s cubic-bezier(.16,1,.3,1) 10.77s both,
+    hideLate .5s ease 14.77s forwards;
+}
+.scene--intro .beatC { display: none; }
+@keyframes neonOrbit {
+  0% { clip-path: inset(0 0 80% 0); }
+  25% { clip-path: inset(0 0 0 80%); }
+  50% { clip-path: inset(80% 0 0 0); }
+  75% { clip-path: inset(0 80% 0 0); }
+  100% { clip-path: inset(0 0 80% 0); }
+}
+@keyframes classroomToBook {
+  from { opacity: 1; transform: translateX(-50%) scale(1); }
+  to { opacity: 0; transform: translateX(-50%) scale(.97); }
+}
+.school-growth {
+  position: absolute;
+  inset: var(--hero-clearance) 0 0;
+  z-index: 5;
+  opacity: 0;
+  background: transparent;
+  overflow: hidden;
+  transition: opacity .25s;
+  pointer-events: none;
+}
+.school-growth canvas { display: block; width: 100%; height: 100%; }
+.tree-student {
+  position: absolute;
+  width: clamp(45px, 6.5vw, 90px);
+  aspect-ratio: 1;
+  object-fit: cover; object-position: center 20%;
+  border-radius: 50%;
+  border: 3px solid #c5ffe3;
+  background: #e8f0ed;
+  box-shadow: 0 0 22px #9effc64a, 0 5px 20px #001a22aa;
+  opacity: 0;
+}
+.tree-caption {
+  position: absolute; bottom: 4px; left: 16px; right: 16px;
+  color: #dcf6e9;
+  text-align: center;
+  font-size: clamp(.85rem, 1.6vw, 1.1rem);
+  line-height: 1.3;
+  letter-spacing: .04em;
+}
+@media (max-width: 700px) {
+  .scene--intro .slat--b {
+    left: 50%; top: var(--video-top);
+    width: min(calc(100vw - 40px), calc(100svh - var(--video-top) - 32px));
+  }
+}
+
+.train-offer {
+  position: absolute; top: 18px; left: 0; right: 0;
+  height: clamp(125px, 20svh, 190px);
+  text-align: center; color: #fff;
+  opacity: 0; z-index: 110;
+}
+.train-offer__kicker { font-size: clamp(.95rem, 2vw, 1.5rem); letter-spacing: .15em; }
+.train-offer__form { font-size: clamp(3.4rem, 9vw, 7rem); font-weight: 700; line-height: 1.15; }
+.train-offer .train-offer__dust { position: absolute; inset: 0; width: 100%; height: 100%; }
+.train-family {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column; justify-content: center; align-items: center;
+  gap: 12px; text-align: center; padding: 24px;
+  color: #fff; opacity: 0;
+}
+.train-family span { font-size: clamp(1rem, 3vw, 2rem); letter-spacing: .2em; }
+.train-family strong { font-size: clamp(2.8rem, 7vw, 6.5rem); line-height: 1.05; }
+
+/* Warm classroom photograph with a fading, animated list. */
+.scene--study { background: #f3ece2; padding: 0; }
+.study-photo { position: absolute; inset: 0 43% 0 0; }
+.study-photo img { width: 100%; height: 100%; object-fit: contain; object-position: left center; transform: scaleX(-1); }
+.study-photo::after {
+  content: ''; position: absolute; inset: 0;
+  display: block;
+  pointer-events: none;
+  background: linear-gradient(90deg, #f3ece2 0%, rgba(243,236,226,.8) 8%, rgba(243,236,226,.25) 20%, transparent 32%);
+}
+.study-message {
+  position: absolute; inset: var(--hero-clearance) 4% 5% 55%;
+  display: flex; flex-direction: column; justify-content: center;
+  color: var(--river-deep);
+}
+.study-message__eyebrow { font-size: .85rem; text-transform: uppercase; letter-spacing: .2em; margin-bottom: 28px; }
+.study-list { display: grid; gap: clamp(18px, 3svh, 34px); }
+.study-list__item { font-size: clamp(1.7rem, 3.8vw, 4.5rem); font-weight: 700; letter-spacing: -.04em; line-height: 1.1; white-space: nowrap; }
+.scene--study.is-on .study-list__item {
+  animation: studyLine 2.2s ease calc(var(--row) * 1.25s + .3s) both;
+}
+.scene--study.is-on .study-list__item i {
+  animation: letterPop .6s cubic-bezier(.34,1.56,.64,1) both;
+  animation-delay: calc(var(--row) * 1.25s + var(--i) * 45ms + .35s);
+}
+@keyframes studyLine {
+  0% { opacity: 0; filter: blur(6px); transform: translateY(12px); }
+  25%, 75% { opacity: 1; filter: blur(0); transform: none; }
+  100% { opacity: .48; filter: blur(0); transform: none; }
+}
+@media (max-width: 700px) {
+  .study-photo { inset: 44% 0 0; }
+  .study-photo::after { background: linear-gradient(#f3ece2, transparent 35%); }
+  .study-message { inset: var(--hero-clearance) 24px 56%; justify-content: center; }
+  .study-message__eyebrow { margin-bottom: 16px; font-size: .7rem; }
+  .study-list { gap: 16px; }
+  .study-list__item { font-size: clamp(1.6rem, 7.5vw, 2.7rem); }
+}
+
+.study-current {
+  position: relative;
+  font-size: clamp(1.7rem, 3.8vw, 4.5rem);
+  font-weight: 700; line-height: 1.1;
+  letter-spacing: -.04em; white-space: nowrap;
+}
+.study-current__word { display: inline-block; }
+.study-bounce-dot {
+  position: absolute; top: .03em; left: .3em;
+  width: .22em; height: .22em;
+  margin-left: -.11em;
+  border-radius: 50%; background: #ef554b;
+  box-shadow: 0 3px 8px #c5353525;
+  transform: translateY(-1.4em);
+}
+.scene--study.is-on .study-bounce-dot {
+  animation: studyDotBounce 1.6s infinite;
+}
+.scene--study.is-on .study-current__word i {
+  animation: letterPop .45s cubic-bezier(.34,1.56,.64,1) both;
+  animation-delay: calc(var(--i) * 30ms);
+}
+@keyframes studyDotBounce {
+  0% { transform: translateY(-1.4em) scale(1); animation-timing-function: ease-in; }
+  28% { transform: translateY(0) scale(1.2,.75); animation-timing-function: ease-out; }
+  65% { transform: translateY(-1.1em) scale(.9,1.1); }
+  100% { transform: translateY(-1.4em) scale(1); }
+}
+@media (max-width: 700px) {
+  .study-current { font-size: clamp(1.6rem, 7.5vw, 2.7rem); }
+}
+
+/* Center the bouncing words in the left panel. */
+@media (min-width: 701px) {
+  .study-photo { inset: 0 0 0 43%; }
+  .study-photo::after { background: linear-gradient(90deg, #f3ece2, transparent 35%); }
+  .study-message { inset: var(--hero-clearance) 55% 5% 4%; }
+}
+.study-message { align-items: center; text-align: center; }
+.study-current { font-size: clamp(1.6rem, 3.2vw, 3.6rem); text-transform: uppercase; }
+@media (max-width: 700px) {
+  .study-current { font-size: clamp(1.5rem, 6.8vw, 2.4rem); }
+}
+
+/* Feather the photo itself so the mist follows its visible edge. */
+.scene--study .study-photo {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+.scene--study .study-photo img {
+  width: auto; height: auto;
+  max-width: 100%; max-height: 100%;
+  display: block;
+  /* The image is mirrored, so its right mask becomes the visible left edge. */
+  -webkit-mask-image: linear-gradient(to left, transparent 0%, rgba(0,0,0,.18) 10%, rgba(0,0,0,.65) 23%, #000 40%);
+  mask-image: linear-gradient(to left, transparent 0%, rgba(0,0,0,.18) 10%, rgba(0,0,0,.65) 23%, #000 40%);
+}
+.scene--study .study-photo::after { display: none; }
+@media (max-width: 700px) {
+  .scene--study .study-photo { align-items: flex-end; justify-content: center; }
+  .scene--study .study-photo img {
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,.3) 10%, #000 30%);
+    mask-image: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,.3) 10%, #000 30%);
+  }
+}
+
+/* Continue from the school introduction directly to the sliding Forms 1–6. */
+.scene--intro .beatB { display: none; }
+.scene--intro.is-on .intro__lead--school {
+  animation: leadIn .6s ease 3.82s both, hideLate .1s linear 9.57s forwards;
+}
+.scene--intro.is-on .sub--a span {
+  animation: subANormal 1.3s ease 7.67s forwards, hideLate .1s linear 9.57s forwards;
+}
+
+/* Stable composited portrait layers prevent neon trails during the moving row. */
+.tree-student {
+  backface-visibility: hidden;
+  will-change: transform;
+  isolation: isolate;
+  filter: none;
+}
+
+/* Pre-rendered halo: moving student cards never use a live filter surface. */
+.tree-student > img, .school-growth .tree-student__glow {
+  position: absolute; inset: 0;
+  display: block; width: 100%; height: 100%;
+  object-fit: contain; object-position: center 20%;
+}
+.tree-student > img { z-index: 1; }
+.school-growth .tree-student__glow { opacity: 0; pointer-events: none; }
+
+/* A foreground planet horizon hides the lower edges of the moving students. */
+.train-horizon { position: absolute; inset: 0; z-index: 105; pointer-events: none; opacity: 0; }
+.train-horizon svg { display: block; width: 100%; height: 100%; overflow: visible; }
+.train-horizon__surface { fill: var(--river-deep); }
+.train-horizon__bloom { fill: none; stroke: #62e9f0; stroke-width: 10; opacity: .55; }
+.train-horizon__edge { fill: none; stroke: #d9ffff; stroke-width: 1.5; vector-effect: non-scaling-stroke; }
+.train-family { z-index: 106; }
+
+.why__slides { position: relative; }
+.why__dust { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 2; }
+
+.hero-motion-toggle { position:absolute;bottom:1rem;right:1rem;z-index:25;border:1px solid #ffffff80;border-radius:3px;background:#163842;color:white;padding:.55rem .9rem;font:600 .85rem var(--font-body);cursor:pointer; }
+.hero-motion-toggle:focus-visible { outline:3px solid var(--gold);outline-offset:3px; }
+
+/* Fast portrait slides replacing the book-and-tree sequence. */
+.school-forms { background:var(--river-deep); }
+.form-slide { position:absolute;will-change:transform; }
+.form-slide img { width:100%;height:100%;object-fit:contain;object-position:center bottom; }
+
+/* Pre-rendered glowing silhouettes stay attached to each sliding student. */
+.form-slide > img, .school-forms .form-slide__glow { position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center bottom; }
+.form-slide > img { z-index:1; }
+.form-slide__glow { pointer-events:none; }

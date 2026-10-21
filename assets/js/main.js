@@ -44,12 +44,36 @@
   const toggle = document.querySelector(".nav-toggle");
   const nav = document.getElementById("main-nav");
   if (toggle && nav) {
+    const closeMenu = () => {
+      nav.classList.remove('is-open');
+      toggle.classList.remove('is-open');
+      toggle.setAttribute('aria-expanded', 'false');
+      toggle.setAttribute('aria-label', 'Open menu');
+      document.body.style.overflow = '';
+    };
     toggle.addEventListener("click", () => {
       const open = nav.classList.toggle("is-open");
       toggle.setAttribute("aria-expanded", open);
       toggle.classList.toggle("is-open", open);
       toggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
       document.body.style.overflow = open ? "hidden" : "";
+      if (open) nav.querySelector('a')?.focus();
+    });
+    nav.addEventListener('click', event => {
+      if (event.target.closest('a') && !event.target.closest('.has-sub')) closeMenu();
+    });
+    document.addEventListener('keydown', event => {
+      if (!nav.classList.contains('is-open')) return;
+      if (event.key === 'Escape') { closeMenu(); toggle.focus(); }
+      if (event.key === 'Tab') {
+        const controls = [...header.querySelectorAll('a, button')];
+        const first = controls[0], last = controls[controls.length - 1];
+        if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+        else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+      }
+    });
+    matchMedia('(max-width: 1020px)').addEventListener('change', event => {
+      if (!event.matches) closeMenu();
     });
   }
   document.querySelectorAll(".nav__item.has-sub > .nav__link").forEach((btn) => {
@@ -114,13 +138,6 @@
       hero.classList.add("hero--reel");
 
       const img = (n) => `${root}assets/images/generated/${n}.webp`;
-      const cards = [
-        ["veranda-friends-square", "Learn together"],
-        ["olevel-science-navy", "Lab days"],
-        ["group-study-formal-square", "Study groups"],
-        ["girls-cricket-landscape", "Play hard"],
-        ["alevel-computers-navy", "Code club"]
-      ];
       const letters = (t) => [...t].map((c, i) => `<i style="--i:${i}">${c}</i>`).join("");
       // Letters reveal outward from the centre of the string.
       const typed = (t) => {
@@ -136,16 +153,18 @@
         <div class="scene scene--intro">
           <svg class="zsvg" aria-hidden="true"><clipPath id="zclip" clipPathUnits="userSpaceOnUse"><text id="zt">HIGH SCHOOL</text></clipPath></svg>
           <svg class="zmeas" aria-hidden="true"><text id="zm">HIGH SCHOOL</text></svg>
-          <div class="welcome welcome--dark"><span class="w-l">WEL</span><span class="w-r">COME</span></div>
+          <div class="welcome welcome--dark"><span class="w-l">${[..."WEL"].map((c, i) => `<i class="welcome__letter" style="--letter:${i}">${c}</i>`).join("")}</span><span class="w-r">${[..."COME"].map((c, i) => `<i class="welcome__letter" style="--letter:${i + 3}">${c}</i>`).join("")}</span></div>
           <div class="intro__navy">
+            <div class="intro__chemistry"></div>
             <div class="welcome welcome--light"><span class="w-l">WEL</span><span class="w-r">COME</span></div>
             <div class="intro__lead intro__lead--to">TO</div>
             <div class="intro__lead intro__lead--school"><span class="lead-a">MUCHEKE</span>&nbsp;<span class="lead-b">HIGH</span></div>
+            <canvas class="intro__dust"></canvas>
             <div class="dgA">
               <div class="slat slat--a"><div class="cam"><video muted loop playsinline preload="auto" src="${root}${hero.dataset.video}"></video></div></div>
               <div class="edge--a"></div>
             </div>
-            <div class="sub sub--a"><span>Masvingo &bull; Zimbabwe</span></div>
+            <div class="sub sub--a"><span></span></div>
             <div class="beatB">
               <div class="slat slat--b"><div class="cam"><video muted loop playsinline preload="auto" src="${root}assets/video/students-collaborating.mp4"></video></div></div>
               <div class="edge--b"></div>
@@ -160,36 +179,51 @@
             ${phrases.map(([lead, key], i) => `<div class="phrase${i === phrases.length - 1 ? " is-last" : ""}" style="--d:${i * 1.6}s"><span class="lead-in">${lead}</span><span class="key">${letters(key)}</span></div>`).join("")}
           </div>
         </div>
-        <div class="scene scene--cards">
-          <div class="orbit">
-            <p class="cards__kicker">Life at Mucheke</p>
-            <div class="cards">
-              ${cards.map(([n, label], i) => `
-                <figure class="card" style="--i:${i}">
-                  <img src="${img(n)}" alt="">
-                  <figcaption>${label}</figcaption>
-                </figure>`).join("")}
-            </div>
+        <div class="scene scene--cards scene--study">
+          <div class="study-photo"><img src="${root}assets/images/focused-study-warm-classroom.webp" alt="Girl writing in her exercise book in the classroom"></div>
+          <div class="study-message">
+            <div class="study-current"><b class="study-bounce-dot"></b><div class="study-current__word">${letters("LEARN ALWAYS").replaceAll('> </i>', '>&nbsp;</i>')}</div></div>
           </div>
         </div>
-        <div class="scene scene--dot">
-          <div class="tagline"><b class="dot"></b>${letters("Learn-always")}</div>
-        </div>
-        <div class="scene scene--brand">
-          <video class="brand__video" muted loop playsinline preload="auto" poster="${img("friends-on-bench-landscape")}" src="${root}${hero.dataset.video}"></video>
-          <div class="brand__shade"></div>
-          <div class="brand__navy">
-            <img class="brand__crest" src="${root}assets/images/mucheke-crest-navy-hd.png" alt="">
-            <div class="brand__name">${typed("MUCHEKE HIGH SCHOOL")}</div>
-          </div>
-        </div>`;
+        `;
       hero.insertBefore(stage, hero.querySelector(".hero__content"));
+      const studyScene = stage.querySelector('.scene--study');
+      const studyWord = studyScene.querySelector('.study-current__word');
+      const studyDot = studyScene.querySelector('.study-bounce-dot');
+      const studyPhrases = ['LEARN ALWAYS', 'THINK DEEPLY', 'GROW TOGETHER'];
+      let studyElapsed = 0, studyPrevious = performance.now(), studyImpact = -1;
+      const bounceStudy = now => {
+        const delta = now - studyPrevious;
+        studyPrevious = now;
+        if (studyScene.classList.contains('is-on') && !stage.classList.contains('is-paused')) {
+          studyElapsed += delta;
+          const beat = Math.floor((studyElapsed - 448) / 1600);
+          if (beat >= 0 && beat !== studyImpact) {
+            studyImpact = beat;
+            studyWord.innerHTML = letters(studyPhrases[(beat + 1) % studyPhrases.length]).replaceAll('> </i>', '>&nbsp;</i>');
+          }
+          const first = studyWord.querySelector('i');
+          if (first) studyDot.style.left = `${first.offsetWidth / 2}px`;
+        } else if (!studyScene.classList.contains('is-on')) {
+          studyElapsed = 0; studyImpact = -1;
+        }
+        requestAnimationFrame(bounceStudy);
+      };
+      requestAnimationFrame(bounceStudy);
+
 
       const scenes = [...stage.querySelectorAll(".scene")];
       const locationCaption = scenes[0].querySelector(".sub--a span");
       locationCaption.addEventListener("animationstart", (event) => {
         if (event.animationName === "subANormal") {
-          locationCaption.textContent = "GOVERNMENT HIGH SCHOOL";
+          locationCaption.innerHTML = `
+            <b class="government-seal">
+              <svg class="government-seal__orbit" viewBox="0 0 160 160"><circle cx="80" cy="80" r="74" pathLength="1"/></svg>
+              <img class="government-crest" src="${root}assets/images/zimbabwe-coat-of-arms.png" alt="">
+            </b>
+            <b class="government-title">${[..."GOVERNMENT HIGH SCHOOL"].map((letter, index) => `<i style="--letter:${index}">${letter === " " ? "&nbsp;" : letter}</i>`).join("")}</b>
+            <b class="government-rule"></b>`;
+          locationCaption.classList.add("has-government-crest");
         }
       });
       // Horizontal offset of the WEL|COME split point from the centre, so the square grows from the split.
@@ -200,12 +234,13 @@
       setSplit();
       setTimeout(setSplit, 800);
       addEventListener("resize", setSplit);
-      const lengths = [20400, 5200, 6000, 3800, 8000];
+      const lengths = [16000, 5200, 5000];
       let cur = -1, paused = false;
       const next = () => {
         if (paused) return setTimeout(next, 400);
+        if (cur === scenes.length - 1) return restartCycle();
         const prev = scenes[cur];
-        cur = cur + 1 >= scenes.length ? 1 : cur + 1; // intro plays once
+        cur += 1;
         scenes[cur].classList.remove("is-leaving");
         scenes[cur].classList.add("is-on", "is-top");
         if (prev) {
@@ -213,12 +248,8 @@
           prev.classList.add("is-leaving");
           setTimeout(() => prev.classList.remove("is-on", "is-leaving"), 900);
         }
-        if (scenes[cur].contains(brandVideo)) { brandVideo.currentTime = 0; if (!paused) brandVideo.play().catch(() => {}); }
-        else brandVideo.pause();
         setTimeout(next, lengths[cur]);
       };
-      // Closing scene: the darkened school video plays, then navy covers it and the crest + name appear.
-      const brandVideo = scenes[scenes.length - 1].querySelector("video");
       // Works out where each title lands. Desktop: along the diagonal edges (A leans /, B leans \).
       // Phones: flat at the top. Everything is positioned by translate/rotate/scale from the scene centre.
       let zoomGeo = null;
@@ -229,30 +260,18 @@
         const w = box.width, H = box.height, yc = (H + clearance - 88) / 2;
         const cur = parseFloat(getComputedStyle(a).fontSize);
         const nat = { x: r.left + r.width / 2 - box.left, y: r.top + r.height / 2 - box.top };
-        let ang = 0, A, B;
-        if (matchMedia("(max-width: 700px)").matches) {
-          const s = Math.min(2.4, (w * 0.8) / r.width), fs = cur * s;
-          const y = clearance + (H - clearance) * 0.2;
-          A = { x: w / 2, y, s, sx: w / 2, sy: y + fs * 0.62 };
-          B = { x: w / 2, y, s: (s * r.width) / c.offsetWidth, sx: w / 2, sy: y + fs * 0.62 };
-        } else {
-          ang = Math.atan2(H, 0.55 * w);                   // both edges drop 55% of the width over the full height
-          const sin = Math.sin(ang), cos = Math.cos(ang);
-          const len = Math.hypot(0.55 * w, H);
-          // Fit the entire rotated word below the header, including its uppermost corner.
-          const wordRatio = a.offsetWidth / cur;
-          const heightRatio = Math.max(a.offsetHeight / cur, c.offsetHeight / parseFloat(getComputedStyle(c).fontSize));
-          const topExtent = cos * 0.62 + (wordRatio * sin + heightRatio * cos) / 2;
-          const bottomExtent = Math.max(.01, (wordRatio * sin + heightRatio * cos) / 2 - cos * 0.62);
-          const fs = Math.max(1, Math.min(len * 0.135,
-            (yc - clearance - 20) / topExtent,
-            (H - 112 - yc) / bottomExtent));
-          const gap = fs * 0.62, sgap = gap + fs * 0.68;
-          const xa = w * (0.65 - 0.55 * yc / H);           // edge A (/) at the centre line
-          const xb = w * (0.40 + 0.55 * yc / H);           // edge B (\) at the centre line
-          A = { x: xa - sin * gap, y: yc - cos * gap, s: fs / cur, sx: xa - sin * sgap, sy: yc - cos * sgap };
-          B = { x: xb + sin * gap, y: yc - cos * gap, s: (fs / cur * r.width) / c.offsetWidth, sx: xb + sin * sgap, sy: yc - cos * sgap };
-        }
+        const ang = 0;
+        const s = Math.min((w * .78) / r.width, (H * .095) / cur);
+        const fs = cur * s, y = clearance + fs * .45;
+        const A = { x: w / 2, y, s, sx: w / 2, sy: y + fs * .62 };
+        const compact = w <= 700;
+        const B = { x: compact ? w / 2 : w * .24,
+          y: compact ? y : clearance + (H - clearance) * .32,
+          s: Math.min((w * (compact ? .78 : .36)) / c.offsetWidth, (H * .085) / parseFloat(getComputedStyle(c).fontSize)) };
+        B.sx = B.x; B.sy = B.y + parseFloat(getComputedStyle(c).fontSize) * B.s * .8;
+        const videoTop = clearance + fs + 20;
+        sc.style.setProperty("--video-top", `${videoTop}px`);
+        sc.style.setProperty("--video-height", `${Math.max(0, (H - videoTop) / H * 100)}%`);
         // Straightened ("normal") state: centred, name over caption.
         const sn = Math.min(2.6, (w * 0.6) / r.width), fsn = cur * sn;
         const N = { x: w / 2, y: yc - fsn * 0.2, s: sn, sx: w / 2, sy: yc + fsn * 0.5 };
@@ -264,11 +283,12 @@
         const set = (k, v) => sc.style.setProperty(k, v);
         set("--cnx", "0px"); set("--cny", `${cyC - yc}px`); set("--cns", scC.toFixed(3));
         set("--sbnx", "0px"); set("--sbny", `${yc + fsC * 0.5 - yc}px`);
-        set("--rot", `${-ang}rad`); set("--rotb", `${ang}rad`);
+        set("--rot", `${-ang}rad`); set("--rotb", `${-ang}rad`);
         set("--ax", `${A.x - nat.x}px`); set("--ay", `${A.y - nat.y}px`); set("--as", A.s.toFixed(3));
         set("--nx", `${N.x - nat.x}px`); set("--ny", `${N.y - nat.y}px`); set("--ns", N.s.toFixed(3));
         set("--sax", `${A.sx - w / 2}px`); set("--say", `${A.sy - yc}px`);
         set("--snx", `${N.sx - w / 2}px`); set("--sny", `${N.sy - yc}px`);
+        set("--government-top", `${N.y + fsn * .42 + 24}px`);
         set("--bx", `${B.x - w / 2}px`); set("--by", `${B.y - yc}px`); set("--bs", B.s.toFixed(3));
         set("--sbx", `${B.sx - w / 2}px`); set("--sby", `${B.sy - yc}px`);
       };
@@ -321,25 +341,123 @@
         };
         requestAnimationFrame(step);
       };
-      setTimeout(prepZoom, 17400);
-      setTimeout(runZoom, 18200);
+
       const diagVideo = scenes[0].querySelector(".slat--a video");
       const diagB = scenes[0].querySelector(".slat--b video");
       let diagOn = false, bOn = false;
-      setTimeout(() => { diagOn = true; if (!paused) diagVideo.play().catch(() => {}); }, 6600);
-      setTimeout(() => { bOn = true; if (!paused) diagB.play().catch(() => {}); }, 11200);
+      setTimeout(() => { diagOn = true; if (!paused) diagVideo.play().catch(() => {}); }, 4970);
+      stage.dataset.startedAt = performance.now();
       next();
+      // Sample the letter shapes so the dust comes from, and assembles into, the words.
+      const dustCanvas = stage.querySelector(".intro__dust");
+      const dustContext = dustCanvas.getContext("2d");
+      const dustStarted = performance.now();
+      let dustClock = dustStarted, dustElapsed = 0, dustPoints;
+      const sampleDust = (selector, text, incoming) => {
+        const node = stage.querySelector(selector), style = getComputedStyle(node);
+        const w = hero.clientWidth, h = hero.clientHeight;
+        const sample = document.createElement("canvas");
+        sample.width = w; sample.height = h;
+        const context = sample.getContext("2d");
+        context.font = `${style.fontWeight} ${style.fontSize} ${style.fontFamily}`;
+        context.textAlign = "center"; context.textBaseline = "middle";
+        context.letterSpacing = style.letterSpacing;
+        const x = w / 2 + (incoming ? 0 : parseFloat(getComputedStyle(scenes[0]).getPropertyValue("--x0")) || 0);
+        const y = h / 2 + (parseFloat(style.paddingTop) - parseFloat(style.paddingBottom)) / 2;
+        context.fillText(text, x, y);
+        const pixels = context.getImageData(0, 0, w, h).data, points = [];
+        const stride = w < 700 ? 2 : 3;
+        for (let py = 0; py < h; py += stride) for (let px = 0; px < w; px += stride) {
+          if (pixels[(py * w + px) * 4 + 3] > 100) points.push({
+            x: px, y: py, incoming, seed: Math.random(),
+            dx: 35 + Math.random() * 180, dy: (Math.random() - .65) * 200,
+          });
+        }
+        const left = Math.min(...points.map(point => point.x));
+        const right = Math.max(...points.map(point => point.x));
+        if (!incoming) {
+          const offset = x - w / 2;
+          node.style.setProperty("--dust-start", `${(left - offset) / w * 100}%`);
+          node.style.setProperty("--dust-end", `${(right - offset + stride) / w * 100}%`);
+        }
+        for (const point of points) point.sweep = (point.x - left) / Math.max(1, right - left);
+        return points;
+      };
+      const drawDust = (now) => {
+        if (!paused) dustElapsed += now - dustClock;
+        dustClock = now;
+        const t = dustElapsed / 1000;
+        if (t > 5.05 || !dustContext) { dustCanvas.remove(); return; }
+        if (t >= 3.42) {
+          if (!dustPoints) {
+            dustCanvas.width = hero.clientWidth; dustCanvas.height = hero.clientHeight;
+            dustPoints = [...sampleDust(".intro__lead--to", "TO", false), ...sampleDust(".intro__lead--school", "MUCHEKE HIGH", true)];
+          }
+          dustContext.clearRect(0, 0, dustCanvas.width, dustCanvas.height);
+          for (const point of dustPoints) {
+            const progress = (t - (point.incoming ? 3.7 : 3.42) - point.sweep * .55) / (point.incoming ? .55 : .7);
+            if (progress < 0 || progress > 1) continue;
+            const travel = point.incoming ? (1 - progress) ** 2 : progress;
+            const alpha = point.incoming ? Math.sin(progress * Math.PI) : (1 - progress) ** .6;
+            dustContext.globalAlpha = alpha * (.7 + .3 * Math.sin(t * 28 + point.seed * 30) ** 2);
+            dustContext.fillStyle = "#ffffff";
+            const flutter = Math.sin(progress * 12 + point.seed * 20) * travel * 12;
+            const px = point.x + point.dx * travel, py = point.y + point.dy * travel + flutter;
+            const size = .8 + point.seed * 1.8;
+            dustContext.fillRect(px, py, size, size);
+            if (point.seed > .87) {
+              dustContext.fillRect(px - 3, py + size / 2, 7, .7);
+              dustContext.fillRect(px + size / 2, py - 3, .7, 7);
+            }
+          }
+          dustContext.globalAlpha = 1;
+        }
+        requestAnimationFrame(drawDust);
+      };
+      requestAnimationFrame(drawDust);
+      const restartCycle = () => {
+        scenes.forEach(scene => scene.classList.remove('is-on', 'is-top', 'is-leaving'));
+        locationCaption.textContent = '';
+        locationCaption.classList.remove('has-government-crest');
+        studyElapsed = 0; studyImpact = -1;
+        studyWord.innerHTML = letters('LEARN ALWAYS').replaceAll('> </i>', '>&nbsp;</i>');
+        diagOn = false; bOn = false;
+        diagVideo.pause(); diagB.pause();
+        diagVideo.currentTime = 0; diagB.currentTime = 0;
+        void stage.offsetWidth;
+        cur = -1;
+        stage.dataset.startedAt = performance.now();
+        dustElapsed = 0; dustClock = performance.now(); dustPoints = undefined;
+        scenes[0].querySelector('.intro__navy').append(dustCanvas);
+        requestAnimationFrame(drawDust);
+        setSplit();
+        setTimeout(setDiag, 3500);
+        setTimeout(() => { diagOn = true; if (!paused) diagVideo.play().catch(() => {}); }, 4970);
+        next();
+        stage.dispatchEvent(new Event('school-restart'));
+      };
       const pause = () => {
-        paused = document.hidden || !visible;
+        paused = document.hidden || !visible || manualPause;
         stage.classList.toggle("is-paused", paused);
-        if (paused) { brandVideo.pause(); diagVideo.pause(); diagB.pause(); }
+        if (paused) { diagVideo.pause(); diagB.pause(); }
         else {
-          if (scenes[cur] && scenes[cur].contains(brandVideo)) brandVideo.play().catch(() => {});
           if (diagOn) diagVideo.play().catch(() => {});
           if (bOn) diagB.play().catch(() => {});
         }
       };
-      let visible = true;
+      let visible = true, manualPause = false;
+      const motionToggle = document.createElement('button');
+      motionToggle.type = 'button';
+      motionToggle.className = 'hero-motion-toggle';
+      motionToggle.textContent = 'Pause animation';
+      motionToggle.setAttribute('aria-pressed', 'false');
+      hero.append(motionToggle);
+      motionToggle.addEventListener('click', () => {
+        manualPause = !manualPause;
+        motionToggle.textContent = manualPause ? 'Play animation' : 'Pause animation';
+        motionToggle.setAttribute('aria-pressed', String(manualPause));
+        pause();
+      });
       new IntersectionObserver(([e]) => { visible = e.isIntersecting; pause(); }).observe(hero);
       document.addEventListener("visibilitychange", pause);
     }
@@ -482,14 +600,81 @@
       </figure>`).join("");
     const items = [...slides.children];
     let at = 0, timer = null;
+    const dissolveQuote = quote => {
+      slides.querySelector('.why__dust')?.remove();
+      const canvas = document.createElement('canvas'); canvas.className = 'why__dust';
+      canvas.width = slides.clientWidth; canvas.height = slides.clientHeight;
+      const context = canvas.getContext('2d');
+      if (!context) return;
+      const bounds = slides.getBoundingClientRect();
+      const walker = document.createTreeWalker(quote, NodeFilter.SHOW_TEXT);
+      const range = document.createRange();
+      let node;
+      context.textBaseline = 'top';
+      while ((node = walker.nextNode())) {
+        const style = getComputedStyle(node.parentElement);
+        context.font = `${style.fontStyle} ${style.fontWeight} ${style.fontSize} ${style.fontFamily}`;
+        context.fillStyle = style.color;
+        for (let i = 0; i < node.length; i++) {
+          if (!node.textContent[i].trim()) continue;
+          range.setStart(node, i); range.setEnd(node, i + 1);
+          const rect = range.getBoundingClientRect();
+          context.fillText(node.textContent[i], rect.left - bounds.left, rect.top - bounds.top);
+        }
+      }
+      const pixels = context.getImageData(0, 0, canvas.width, canvas.height).data;
+      const particles = [];
+      for (let y = 0; y < canvas.height; y += 2) for (let x = 0; x < canvas.width; x += 2) {
+        const offset = (y * canvas.width + x) * 4;
+        if (pixels[offset + 3] > 70) particles.push({x,y,
+          color: `rgb(${pixels[offset]},${pixels[offset + 1]},${pixels[offset + 2]})`,
+          dx: (Math.random() - .5) * 90, dy: (Math.random() - .6) * 100,
+          size: .7 + Math.random() * 1.2});
+      }
+      context.clearRect(0, 0, canvas.width, canvas.height);
+      slides.append(canvas);
+      const started = performance.now();
+      const draw = now => {
+        if (!canvas.isConnected) return;
+        const progress = Math.min(1, (now - started) / 850);
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        for (const particle of particles) {
+          const scatter = Math.min(1, progress * 1.4);
+          context.globalAlpha = Math.sin(Math.min(1, progress * 2) * Math.PI / 2) * (1 - progress);
+          context.fillStyle = particle.color;
+          context.fillRect(particle.x - canvas.width * progress * .95 + particle.dx * scatter,
+            particle.y + particle.dy * scatter + Math.sin(progress * 10 + particle.x) * scatter * 8,
+            particle.size, particle.size);
+        }
+        if (progress < 1) requestAnimationFrame(draw);
+        else canvas.remove();
+      };
+      requestAnimationFrame(draw);
+    };
     const go = (n) => {
-      items[at].classList.remove("is-active");
+      const previous = items[at];
+      const direction = n < at ? -1 : 1;
+      items.forEach(item => item.getAnimations().forEach(animation => animation.cancel()));
+      if (!reduceMotion && direction > 0) dissolveQuote(previous);
+      previous.classList.remove("is-active");
       at = (n + items.length) % items.length;
       items[at].classList.add("is-active");
+      items.forEach((item, index) => item.setAttribute('aria-hidden', index !== at));
+      if (!reduceMotion && previous !== items[at]) {
+        const timing = {duration: 650, easing: 'cubic-bezier(.22,1,.36,1)'};
+        previous.animate([
+          {transform: 'translateX(0)', opacity: 1, visibility: 'visible'},
+          {transform: `translateX(${-direction * 110}%)`, opacity: 0, visibility: 'visible'}
+        ], timing);
+        items[at].animate([
+          {transform: `translateX(${direction * 110}%)`},
+          {transform: 'translateX(0)'}
+        ], timing);
+      }
     };
     const restart = () => {
       clearInterval(timer);
-      if (!reduceMotion && items.length > 1) timer = setInterval(() => go(at + 1), 9000);
+      if (!reduceMotion && items.length > 1) timer = setInterval(() => go(at + 1), 5000);
     };
     stage.querySelector(".why__arrow--prev").addEventListener("click", () => { go(at - 1); restart(); });
     stage.querySelector(".why__arrow--next").addEventListener("click", () => { go(at + 1); restart(); });

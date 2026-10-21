@@ -1,0 +1,75 @@
+/* Shared inner-page treatments, using the established school palette. */
+.page-eyebrow { font-size:.8rem; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:var(--river); margin-bottom:1.1rem; }
+.page-hero { min-height:560px; display:flex; align-items:center; isolation:isolate; }
+.page-hero > img { opacity:.48; animation:campus-drift 18s ease-in-out infinite alternate; }
+.page-hero::after { content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(10,32,43,.88),rgba(10,32,43,.18));z-index:-1; }
+.page-hero > img { z-index:-2; }
+.page-hero .container { width:100%; }
+.page-hero h1 { font-size:clamp(3.1rem,7vw,6rem);max-width:16ch; }
+.page-hero p { max-width:53ch; }
+.page-hero .page-eyebrow { color:var(--gold-soft); }
+.wall-band { display:none; }
+.section h2 { font-size:clamp(2rem,3.6vw,3.2rem); }
+.info-grid { margin-block:2rem;gap:1.5rem; }
+.info-card { padding:2rem;border:1px solid #dfe6e6;border-top:3px solid var(--gold);border-radius:4px; }
+.split__img img { width:100%;height:440px;object-fit:cover;border-radius:4px; }
+.form { background:white;border:1px solid #dfe6e6;padding:clamp(1rem,3vw,2rem);border-radius:4px; }
+.form-note { font-size:.9rem;color:var(--granite);margin-top:1rem; }
+.contact-hero__art img { width:100%;height:470px;object-fit:cover;border-radius:50% 50% 6px 6px; }
+.tour-nav { background:var(--river-deep);padding:1.2rem 0; }
+.tour-nav .container { display:flex;gap:1.4rem;flex-wrap:wrap; }
+.tour-nav a { color:white;font-size:.9rem;text-decoration:none; }
+.tour-nav a:hover { color:var(--gold-soft); }
+.tour-stop { scroll-margin-top:100px; }
+.tour-stop:nth-of-type(odd) .tour-photo { order:2; }
+.tour-photo { position:relative; }
+.tour-photo img { height:430px;width:100%;object-fit:cover;border-radius:4px; }
+.tour-photo span { position:absolute;bottom:1rem;left:1rem;background:var(--gold);color:var(--river-deep);padding:.4rem .9rem;font-weight:700; }
+.tour-next { color:var(--river);font-weight:700;text-underline-offset:6px; }
+@keyframes campus-drift { from { transform:scale(1); } to { transform:scale(1.08) translateX(-1%); } }
+@media(max-width:700px) { .page-hero {min-height:480px;} .tour-stop:nth-of-type(odd) .tour-photo {order:0;} .tour-photo img,.split__img img {height:300px;} .contact-hero__art img {height:330px;} }
+@media(prefers-reduced-motion:reduce) { .page-hero > img { animation:none; } }
+.page-hero .container { width:min(calc(100% - 3rem),var(--max));margin-inline:auto; }
+/* Keep the complete group portrait visible at every screen size. */
+#stop-5 .tour-photo img { height:auto;aspect-ratio:auto;object-fit:contain; }
+
+/* Tour photographs bleed to the outer edge and dissolve towards the copy. */
+.tour-stop { padding:0;overflow:hidden; }
+.tour-stop > .container.split {
+  width:100%;max-width:none;margin:0;padding:0;
+  grid-template-columns:1fr 1fr;gap:0;align-items:stretch;
+  min-height:560px;
+}
+.tour-stop .tour-photo { min-width:0;min-height:100%;align-self:stretch; }
+.tour-stop .tour-photo img,
+#stop-5 .tour-photo img {
+  position:absolute;inset:0;width:100%;height:100%;
+  border-radius:0;aspect-ratio:auto;object-fit:cover;object-position:center top;
+  -webkit-mask-image:linear-gradient(to right,#000 65%,transparent 100%);
+  mask-image:linear-gradient(to right,#000 65%,transparent 100%);
+}
+.tour-stop:nth-of-type(odd) .tour-photo img {
+  -webkit-mask-image:linear-gradient(to left,#000 65%,transparent 100%);
+  mask-image:linear-gradient(to left,#000 65%,transparent 100%);
+}
+.tour-stop .tour-photo + div {
+  align-self:center;padding:clamp(2rem,6vw,6rem);
+}
+/* The square group portrait sets enough height to retain every face. */
+#stop-5 > .container.split { min-height:max(560px,50vw); }
+@media(max-width:860px) {
+  .tour-stop > .container.split { grid-template-columns:1fr;min-height:0; }
+  .tour-stop:nth-of-type(odd) .tour-photo { order:0; }
+  .tour-stop .tour-photo { min-height:0;height:clamp(300px,65vw,540px); }
+  #stop-5 > .container.split { min-height:0; }
+  #stop-5 .tour-photo { height:auto;aspect-ratio:1; }
+  .tour-stop .tour-photo img,
+  .tour-stop:nth-of-type(odd) .tour-photo img {
+    -webkit-mask-image:linear-gradient(to bottom,#000 75%,transparent 100%);
+    mask-image:linear-gradient(to bottom,#000 75%,transparent 100%);
+  }
+  .tour-stop .tour-photo + div { padding:1.5rem var(--gap) 3rem; }
+  .tour-photo span { bottom:2rem; }
+}
+/* Keep the laboratory photo clear, including the teacher at its inner edge. */
+#stop-3 .tour-photo img { -webkit-mask-image:none;mask-image:none; }

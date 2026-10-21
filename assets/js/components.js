@@ -20,6 +20,7 @@
     { label: "Student life", href: "pages/sport.html", page: "life" },
     { label: "Admissions", href: "pages/admissions.html", page: "admissions" },
     { label: "News", href: "pages/news.html", page: "news" },
+    { label: "Tour", href: "pages/tour.html", page: "tour" },
     { label: "Contact", href: "pages/contact.html", page: "contact" }
   ];
 
@@ -55,6 +56,7 @@
       <nav class="nav" id="main-nav" aria-label="Main">
         <ul class="nav__list">${navHTML()}</ul>
       </nav>
+      <a class="header-apply" href="${url("pages/admissions.html")}">Apply now</a>
     </div>
   </header>`;
 
@@ -79,7 +81,7 @@
           <li><a href="${url("pages/about.html")}">About us</a></li>
           <li><a href="${url("pages/academics.html")}">Academics</a></li>
           <li><a href="${url("pages/admissions.html")}">Admissions</a></li>
-          <li><a href="${url("pages/news.html")}">News</a></li>
+          <li><a href="${url("pages/news.html")}">News</a></li><li><a href="${url("pages/clubs.html")}">Clubs and culture</a></li><li><a href="${url("pages/tour.html")}">School tour</a></li><li><a href="${url("pages/history.html")}">Our history</a></li>
           <li><a href="${url("pages/contact.html")}">Contact</a></li>
         </ul>
       </div>
